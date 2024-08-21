@@ -1,0 +1,14 @@
+<odoo>
+  <record id="view_loyalty_reward_form_inherited" model="ir.ui.view">
+    <field name="name">loyalty.reward.form.inherited</field>
+    <field name="model">loyalty.reward</field>
+    <field name="inherit_id" ref="pos_loyalty.view_loyalty_reward_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='minimum_points']" position="after">
+            <!-- <field name="price"/> -->
+            <field name="percentage"/>
+            <!-- <field name="points_required"/> -->
+        </xpath>
+    </field>
+</record>
+</odoo>
