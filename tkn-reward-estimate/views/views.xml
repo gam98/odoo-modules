@@ -2,13 +2,21 @@
   <record id="view_loyalty_reward_form_inherited" model="ir.ui.view">
     <field name="name">loyalty.reward.form.inherited</field>
     <field name="model">loyalty.reward</field>
-    <field name="inherit_id" ref="pos_loyalty.view_loyalty_reward_form"/>
+    <field name="inherit_id" ref="pos_loyalty.view_loyalty_reward_form" />
     <field name="arch" type="xml">
-        <xpath expr="//field[@name='minimum_points']" position="after">
-            <!-- <field name="price"/> -->
-            <field name="percentage"/>
-            <!-- <field name="points_required"/> -->
-        </xpath>
+      <xpath expr="//field[@name='point_cost']/ancestor::group" position="replace">
+        <group>
+          <field name="add_points_method" />
+          <field name="point_cost"
+            attrs="{
+                   'invisible': [('reward_type','=','resale'), ('add_points_method', '=', False)], 
+                   'readonly': [('add_points_method', '=', 'automatic')]
+                 }" />
+          <field name="percentage" attrs="{'invisible': [('add_points_method', '=', 'manual')]}" />
+          <field name="is_promotional" attrs="{'invisible': [('add_points_method', '=', 'manual')]}" />
+          <field name="minimum_points" />
+        </group>
+      </xpath>
     </field>
-</record>
+  </record>
 </odoo>
