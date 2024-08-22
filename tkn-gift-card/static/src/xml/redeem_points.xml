@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="RedeemPoints" owl="1">
+        <span class="control-button">
+            Canjear puntos por gift card
+        </span>
+    </t>
+
+</templates>
