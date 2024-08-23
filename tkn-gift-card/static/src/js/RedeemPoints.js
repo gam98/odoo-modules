@@ -1,4 +1,4 @@
-odoo.define('tkn_gift_card.redeem_points', function (require) {
+odoo.define('tkn_gift_card.redeemPoints', function (require) {
   'use strict';
 
   const { Gui } = require('point_of_sale.Gui');
@@ -6,10 +6,8 @@ odoo.define('tkn_gift_card.redeem_points', function (require) {
   const { useListener } = require('web.custom_hooks');
   const ProductScreen = require('point_of_sale.ProductScreen');
   const Registries = require('point_of_sale.Registries');
-  const rpc = require('web.rpc');
 
   class RedeemPoints extends PosComponent {
-
     constructor() {
       super(...arguments);
       useListener('click', this.onClick);
@@ -26,9 +24,8 @@ odoo.define('tkn_gift_card.redeem_points', function (require) {
         return;
       }
 
-      console.log('Client:', client);
-
       const points = client.loyalty_points;
+
       if (points <= 0) {
         Gui.showPopup('ErrorPopup', {
           title: this.env._t('Puntos insuficientes'),
@@ -37,57 +34,26 @@ odoo.define('tkn_gift_card.redeem_points', function (require) {
         return;
       }
 
-      const giftCardValue = this.calculateGiftCardValue(points);
 
-      const { confirmed } = await Gui.showPopup('ConfirmPopup', {
+      const { confirmed, payload } = await this.showPopup('RedeemPointsPopup', {
         title: this.env._t('Canjear puntos por gift card'),
-        body: this.env._t(`Tienes ${points} puntos. Esto equivale a una gift card de ${giftCardValue} unidades monetarias. ¿Deseas canjear?`),
-        cancelText: this.env._t('Cancelar'),
-        confirmText: this.env._t('Canjear'),
-        inputType: 'number',  // Aquí especificas que el tipo de entrada es un número
-        value: 1,  // Valor inicial del campo
-        confirm: (value) => {
-          if (value !== null) {
-            console.log('Cantidad ingresada:', value);
-            // Aquí puedes agregar la lógica para manejar el valor ingresado
-          }
-        },
+        client,
+        points,
       });
 
-      if (confirmed) {
-        await this.redeemPointsForGiftCard({ points, client, giftCardValue });
+      if (confirmed && payload) {
+        const { pointsToRedeem } = payload;
+        const giftCardValue = this.calculateGiftCardValue(pointsToRedeem);
+        await this.redeemPointsForGiftCard({ points: pointsToRedeem, client, giftCardValue });
       }
-
     }
 
     async redeemPointsForGiftCard({ points, client, giftCardValue }) {
       try {
-        // Crear la gift card en el backend
-        console.log('Gift Card Value:', giftCardValue);
-        console.log('Client:', client);
-        const giftCard = await rpc.query({
-          model: 'loyalty.card',
-          method: 'create',
-          args: [{
-            client_id: client.id,
-            value: giftCardValue,
-          }],
-        });
-
-        console.log('Gift Card:', giftCard);
-
-        // Actualizar puntos del cliente
-        // await this.rpc({
-        //   model: 'pos.order',
-        //   method: 'write',
-        //   args: [[client.loyalty_points_id], { 'points': client.loyalty_points - points }],
-        // });
-
         Gui.showPopup('ConfirmPopup', {
           title: this.env._t('Gift Card Creada'),
           body: this.env._t(`Se ha creado una gift card de valor ${giftCardValue} para el cliente ${client.name}.`),
         });
-
       } catch (error) {
         Gui.showPopup('ErrorPopup', {
           title: this.env._t('Error'),
@@ -97,12 +63,9 @@ odoo.define('tkn_gift_card.redeem_points', function (require) {
       }
     }
 
-
     calculateGiftCardValue(points) {
-      // Aquí implementas la lógica para convertir puntos en valor de gift card
-      return points / 100; // Ejemplo: 1 punto = 0.1 de valor
+      return points / 100;
     }
-
   }
 
   RedeemPoints.template = 'RedeemPoints';

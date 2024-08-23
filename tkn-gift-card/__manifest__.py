@@ -30,8 +30,9 @@
         'security/ir.model.access.csv',
     ],
     "assets": {
-      'web.assets_backend': [
-        'tkn-gift-card/static/src/js/redeem_points.js',
+      'point_of_sale.assets': [
+        'tkn-gift-card/static/src/js/RedeemPoints.js',
+        'tkn-gift-card/static/src/js/RedeemPointsPopup.js',
       ],
       'web.assets_qweb': [
         'tkn-gift-card/static/src/xml/redeem_points.xml',
