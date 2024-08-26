@@ -1,0 +1,13 @@
+<templates id="template" xml:space="preserve">
+  <!-- Template para el popup de advertencia de puntos negativos -->
+  <t t-name="NegativePointsPopup" owl="1">
+      <div class="popup negative-points-popup">
+          <div class="body">
+              <p>Advertencia: No está permitido acumular puntos negativos.</p>
+          </div>
+          <footer>
+              <button class="button" t-on-click="closePopup">OK</button>
+          </footer>
+      </div>
+  </t>
+</templates>

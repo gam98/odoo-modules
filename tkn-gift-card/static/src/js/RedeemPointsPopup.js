@@ -24,7 +24,13 @@ odoo.define('tkn_gift_card.redeemPointsPopup', function (require) {
       const discountValue = this.calculateDiscount(pointsToRedeem);
 
       this.state.pointsToRedeem = pointsToRedeem;
-      this.state.discountValue = discountValue;
+
+      if(isNaN(discountValue)) {
+        this.state.discountValue = 0;
+      } else {
+        this.state.discountValue = discountValue;
+      }
+
       this.render();
     }
     async confirm() {
@@ -37,7 +43,7 @@ odoo.define('tkn_gift_card.redeemPointsPopup', function (require) {
         });
         return;
       }
-      this.resolve({ confirmed: true, payload: { pointsToRedeem } });
+      this.props.resolve({ confirmed: true, payload: { pointsToRedeem } });
     }
   }
 

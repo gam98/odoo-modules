@@ -46,14 +46,17 @@ odoo.define('tkn_gift_card.redeemPoints', function (require) {
         const giftCardValue = this.calculateGiftCardValue(pointsToRedeem);
         await this.redeemPointsForGiftCard({ points: pointsToRedeem, client, giftCardValue });
       }
+
     }
 
     async redeemPointsForGiftCard({ points, client, giftCardValue }) {
       try {
         Gui.showPopup('ConfirmPopup', {
           title: this.env._t('Gift Card Creada'),
-          body: this.env._t(`Se ha creado una gift card de valor ${giftCardValue} para el cliente ${client.name}.`),
-        });
+          body: this.env._t(`Se han canjeado ${points} puntos por una gift card de valor $${giftCardValue} para el cliente ${client.name}.`),
+        }); 
+        this.env.pos.gift_card_value = giftCardValue;
+        
       } catch (error) {
         Gui.showPopup('ErrorPopup', {
           title: this.env._t('Error'),

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "tkn-gift-card",
+    'name': "tkn-pos-loyalty-validation",
 
     'summary': """
         Short (1 phrase/line) summary of the module's purpose, used as
@@ -20,26 +20,21 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'point_of_sale'],
+    'depends': ['base', 'point_of_sale', 'pos_loyalty'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
-        'security/ir.model.access.csv',
     ],
-    "assets": {
-      'point_of_sale.assets': [
-        'tkn-gift-card/static/src/css/gift-card.css',
-        'tkn-gift-card/static/src/js/RedeemPoints.js',
-        'tkn-gift-card/static/src/js/RedeemPointsPopup.js',
-        'tkn-gift-card/static/src/js/GiftCardValueDisplay.js',
-      ],
-      'web.assets_qweb': [
-        'tkn-gift-card/static/src/xml/RedeemPoints.xml',
-        'tkn-gift-card/static/src/xml/GiftCardValueDisplay.xml',
-      ]
+    'assets': {
+        'point_of_sale.assets': [
+            'tkn-pos-loyalty-validation/static/src/js/PosLoyaltyValidation.js',
+        ],
+        'web.assets_qweb': [
+            'tkn-pos-loyalty-validation/static/src/xml/PosLoyaltyValidation.xml',
+        ]
     },
     # only loaded in demonstration mode
     'demo': [
