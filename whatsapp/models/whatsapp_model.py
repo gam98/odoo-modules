@@ -10,15 +10,17 @@ class PosOrder(models.Model):
     @api.model
     def _process_payment_lines(self, pos_order, pos_session, draft, existing_payment):        
         partner = self.env['res.partner'].search([('id', '=', pos_order['partner_id'])], limit=1)
-        self._send_whatsapp(partner, pos_order)    
+        message = self._build_message(partner, pos_order)
+        number = self._trim_phone_number(partner.phone)
+        self._send_whatsapp(number, message)
 
-    def _send_whatsapp(self, partner, pos_order):
+    def _trim_phone_number(self, phone):
+        return ''.join(filter(str.isdigit, phone))
+    
+    def _build_message(self, partner, pos_order):
         """
-        Envia un mensaje predeterminado de whatsapp al numero del cliente vía API de Mercately
+        Construye el mensaje con su contenido para enviar al técnico
         """
-        # TO DO: hacer numero dinámico, tomar api-key y url de .env, refactorizar, agregar timeout en el trysss completar manifest del modulo
-        
-        url = "https://app.mercately.com/retailers/api/v1/whatsapp/send_message"
         loyalty_points_won = pos_order['loyalty_points']
         total_loyalty_points = partner.loyalty_points + loyalty_points_won
 
@@ -27,7 +29,6 @@ class PosOrder(models.Model):
              "order_amount": pos_order['amount_total'],
              "loyalty_points_won": int(loyalty_points_won),
              "total_loyalty_points": int(total_loyalty_points),
-             "cellphone_number": '5493517738898' 
         }
 
         message = (
@@ -39,9 +40,18 @@ class PosOrder(models.Model):
             "Para más información sobre cómo redimir tus puntos, por favor visita este enlace: https://www.google.com\n\n"
             "¡Esperamos verte pronto! Que tengas un gran día."
         )
+        return message
+    
+    def _send_whatsapp(self, number, message):
+        """
+        Envia un mensaje predeterminado de whatsapp al numero del cliente vía API de Mercately
+        """
+        # TO DO: hacer numero dinámico, tomar api-key y url de .env, refactorizar, agregar timeout en el trysss completar manifest del modulo
+        
+        url = "https://app.mercately.com/retailers/api/v1/whatsapp/send_message"
 
         payload = {
-            "phone_number": message_data['cellphone_number'],
+            "phone_number": number,
             "message": message
         }
 
