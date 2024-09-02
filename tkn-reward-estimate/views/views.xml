@@ -8,11 +8,12 @@
         <group>
           <field name="add_points_method" />
           <field name="point_cost"
-            attrs="{
-                   'invisible': [('reward_type','=','resale'), ('add_points_method', '=', False)]
-                 }" />
+            attrs="{'invisible': [('reward_type','=','resale'), ('add_points_method', '=', False)]}" />
           <field name="percentage" attrs="{'invisible': [('add_points_method', '=', 'manual')]}" />
           <field name="is_promotional" attrs="{'invisible': [('add_points_method', '=', 'manual')]}" />
+          <field name="show_cost_price" invisible="1"/>
+          <field name="cost_price"
+            attrs="{'invisible': [('show_cost_price', '=', False)]}" />
           <field name="minimum_points" />
         </group>
       </xpath>
