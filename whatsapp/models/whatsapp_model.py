@@ -16,7 +16,8 @@ class PosOrder(models.Model):
         messages = self._build_messages(partner, pos_order)
         number = self._trim_phone_number(partner.phone)
         for message in messages:
-            self._send_whatsapp(number, message)
+            print(message)
+            #self._send_whatsapp(number, message)
 
     def _trim_phone_number(self, phone):
         return ''.join(filter(str.isdigit, phone))
@@ -69,7 +70,7 @@ class PosOrder(models.Model):
             message_data['partner_name'],
             message_data['order_amount'],
             message_data['loyalty_points_won'],
-            message_data['total_loyalty_points'],
+            message_data['total_loyalty_points'] + message_data['total_redeemed_points'],
             None
         )
 
