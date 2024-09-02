@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="tkn-redeemable-products-in-pos.list">
+      <field name="name">tkn-redeemable-products-in-pos list</field>
+      <field name="model">tkn-redeemable-products-in-pos.tkn-redeemable-products-in-pos</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="tkn-redeemable-products-in-pos.action_window">
+      <field name="name">tkn-redeemable-products-in-pos window</field>
+      <field name="res_model">tkn-redeemable-products-in-pos.tkn-redeemable-products-in-pos</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="tkn-redeemable-products-in-pos.action_server">
+      <field name="name">tkn-redeemable-products-in-pos server</field>
+      <field name="model_id" ref="model_tkn-redeemable-products-in-pos_tkn-redeemable-products-in-pos"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="tkn-redeemable-products-in-pos" id="tkn-redeemable-products-in-pos.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="tkn-redeemable-products-in-pos.menu_1" parent="tkn-redeemable-products-in-pos.menu_root"/>
+    <menuitem name="Menu 2" id="tkn-redeemable-products-in-pos.menu_2" parent="tkn-redeemable-products-in-pos.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="tkn-redeemable-products-in-pos.menu_1_list" parent="tkn-redeemable-products-in-pos.menu_1"
+              action="tkn-redeemable-products-in-pos.action_window"/>
+    <menuitem name="Server to list" id="tkn-redeemable-products-in-pos" parent="tkn-redeemable-products-in-pos.menu_2"
+              action="tkn-redeemable-products-in-pos.action_server"/>
+-->
+  </data>
+</odoo>
