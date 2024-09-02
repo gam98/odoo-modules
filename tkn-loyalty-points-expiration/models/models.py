@@ -25,3 +25,9 @@ class LoyaltyProgram(models.Model):
                 'expiration_period_months': self.expiration_period_months,
             })
         return expiration
+
+
+class PosOrder(models.Model):
+    _inherit = 'pos.order'
+
+    is_loyalty_points_expired = fields.Boolean(string='Expired', default=False)
