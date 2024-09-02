@@ -20,7 +20,4 @@
     'application': True,
     'installable': True,
     'license': 'LGPL-3',
-    'images': [
-        'static/description/whatsapp_notification_screenshot.png',
-    ],
 }
