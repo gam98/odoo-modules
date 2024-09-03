@@ -1,0 +1,20 @@
+.redeemable-products-wrapper {
+  max-width: 1000px !important;
+}
+
+.redeemable-container {
+  display: flex;
+  gap: 1rem;
+}
+
+.redeemable-percentage-input {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.redeemable-products-list {
+  overflow:auto; 
+  max-height: 500px;
+  max-width: 650px;
+}

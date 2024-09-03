@@ -1,4 +1,4 @@
-odoo.define('tkn_gift_redeemable_products_in_pos.RedeemableProducts', function (require) {
+odoo.define('tkn_redeemable_products_in_pos.RedeemableProducts', function (require) {
   'use strict';
 
   const { Gui } = require('point_of_sale.Gui');
@@ -25,6 +25,7 @@ odoo.define('tkn_gift_redeemable_products_in_pos.RedeemableProducts', function (
       }
 
       const points = client.loyalty_points;
+      const products = this.env.pos.db.get_product_by_category(0);       
 
       if (points <= 0) {
         Gui.showPopup('ErrorPopup', {
@@ -35,36 +36,20 @@ odoo.define('tkn_gift_redeemable_products_in_pos.RedeemableProducts', function (
       }
 
 
-      const { confirmed, payload } = await this.showPopup('RedeemPointsPopup', {
-        title: this.env._t('Canjear puntos por productos'),
+      const { confirmed, payload } = await this.showPopup('RedeemableProductsPopup', {
+        title: this.env._t('Canjear productos por puntos'),
         client,
         points,
+        products
       });
 
-      if (confirmed && payload) {
-        const { pointsToRedeem } = payload;
-        const giftCardValue = this.calculateGiftCardValue(pointsToRedeem);
-        await this.redeemPointsForGiftCard({ points: pointsToRedeem, client, giftCardValue });
+      if (confirmed ) {
+        this.trigger('close-popup');
       }
 
     }
 
-    async redeemPointsForGiftCard({ points, client, giftCardValue }) {
-      try {
-        Gui.showPopup('ConfirmPopup', {
-          title: this.env._t('Gift Card Creada'),
-          body: this.env._t(`Se han canjeado ${points} puntos por una gift card de valor $${giftCardValue} para el cliente ${client.name}.`),
-        }); 
-        this.env.pos.gift_card_value = giftCardValue;
-        
-      } catch (error) {
-        Gui.showPopup('ErrorPopup', {
-          title: this.env._t('Error'),
-          body: this.env._t('Hubo un error al intentar crear la gift card. Por favor, intente nuevamente.'),
-        });
-        console.error('Error al canjear puntos por gift card:', error);
-      }
-    }
+  
 
   }
 

@@ -1,8 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-  <t t-name="RedeemProducts" owl="1">
+  <t t-name="RedeemableProducts" owl="1">
     <span class="control-button">
         Productos redimibles
     </span>
+  </t>
+
+  <t t-name="RedeemableProductsPopup" owl="1">
+    <div role="dialog" class="modal-dialog">
+      <Draggable>
+        <div class="popup redeemable-products-wrapper">
+            <div>
+                <div class="popup-header">
+                    <h2><t t-esc="props.title"/></h2>
+                </div>
+                <div class="redeemable-container">
+               
+                  <div class="redeemable-products-list">                
+                    <RedeemableProductList products="props.products"  t-on-product-selected="onProductSelected"/>
+                  </div>
+
+                  <div class="">
+                    <p><strong>Cliente:</strong> <t t-esc="props.client.name"/></p>
+                    <p><strong>Puntos disponibles:</strong> <t t-esc="props.points"/></p> 
+                    <t t-if="state.selectedProduct">
+                      <p><strong>Producto seleccionado:</strong> <t t-esc="state.selectedProduct.display_name"/></p> 
+                      <p><strong>Precio:</strong> $<t t-esc="state.selectedProduct.lst_price"/></p> 
+                    </t>
+                    <div class="redeemable-percentage-input">
+                      <label for="discount-percentage">Porcentaje:</label>
+                      <input id="discount-percentage" type="number" min="0" max="100" t-model="state.percentage" t-on-input="onInputChange"/>
+                    </div>
+
+                <!-- Mostrar puntos necesarios para canjear -->
+                  <t t-if="state.pointsNeeded">
+                      <p><strong>Puntos necesarios para canjear:</strong> <t t-esc="state.pointsNeeded"/></p>
+                  </t>                   
+                </div>
+                </div>
+              
+                <div class="footer">                      
+                    <button style="color:white;background:#6EC89B;border-color: transparent;" class="button confirm" t-on-click="confirm">Aceptar</button>
+                    <button class="button cancel" style="color: white;background: #D25B5B ;border-color: transparent;" t-on-click="cancel">Cancelar</button>
+                </div>
+            </div>
+        </div>
+      </Draggable>
+    </div>
   </t>
 </templates>
