@@ -1,5 +1,5 @@
 .redeemable-products-wrapper {
-  max-width: 1000px !important;
+  max-width: 1200px !important;
 }
 
 .redeemable-container {
@@ -13,8 +13,17 @@
   align-items: center;
 }
 
+.redeemable-products-widget {
+  display: flex;
+  flex-direction: column;
+}
+
 .redeemable-products-list {
-  overflow:auto; 
-  max-height: 500px;
-  max-width: 650px;
+  overflow: auto; 
+  height: 600px;
+  width: 650px;
+}
+
+.redeemable-products-control-panel {
+  width: 650px;
 }

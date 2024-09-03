@@ -16,9 +16,9 @@
                 </div>
                 <div class="redeemable-container">
                
-                  <div class="redeemable-products-list">                
-                    <RedeemableProductList products="props.products"  t-on-product-selected="onProductSelected"/>
-                  </div>
+                    <!-- <RedeemableProductList products="props.products"  t-on-product-selected="onProductSelected"/> -->
+                    <RedeemableProductsWidget mobileSearchBarIsShown="props.mobileSearchBarIsShown" />
+                  
 
                   <div class="">
                     <p><strong>Cliente:</strong> <t t-esc="props.client.name"/></p>

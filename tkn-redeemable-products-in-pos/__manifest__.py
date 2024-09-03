@@ -39,12 +39,24 @@
           'tkn-redeemable-products-in-pos/static/src/js/RedeemableProductsPopup.js',
           'tkn-redeemable-products-in-pos/static/src/js/RedeemableProductList.js',
           'tkn-redeemable-products-in-pos/static/src/js/RedeemableProductItem.js',
-          'tkn-redeemable-products-in-pos/static/src/js/pos_loyalty_extension.js'
+          'tkn-redeemable-products-in-pos/static/src/js/pos_loyalty_extension.js',
+          'tkn-redeemable-products-in-pos/static/src/js/RedeemableProductsWidget.js',
+          'tkn-redeemable-products-in-pos/static/src/js/RedeemableProductsWidgetControlPanel.js',
+          'tkn-redeemable-products-in-pos/static/src/js/Widgets/RedeemableCategoryButton.js',
+          'tkn-redeemable-products-in-pos/static/src/js/Widgets/RedeemableCategoryBreadcrumb.js',
+          'tkn-redeemable-products-in-pos/static/src/js/Widgets/RedeemableHomeCategoryBreadcrumb.js',
+          'tkn-redeemable-products-in-pos/static/src/js/Widgets/RedeemableCategorySimpleButton.js',
        ],
        'web.assets_qweb': [
           'tkn-redeemable-products-in-pos/static/src/xml/RedeemableProducts.xml',
           'tkn-redeemable-products-in-pos/static/src/xml/RedeemableProductList.xml',
           'tkn-redeemable-products-in-pos/static/src/xml/RedeemableProductItem.xml',
+          'tkn-redeemable-products-in-pos/static/src/xml/RedeemableProductsWidget.xml',
+          'tkn-redeemable-products-in-pos/static/src/xml/RedeemableProductsWidgetControlPanel.xml',
+          'tkn-redeemable-products-in-pos/static/src/xml/Widgets/RedeemableCategoryButton.xml',
+          'tkn-redeemable-products-in-pos/static/src/xml/Widgets/RedeemableCategoryBreadcrumb.xml',
+          'tkn-redeemable-products-in-pos/static/src/xml/Widgets/RedeemableHomeCategoryBreadcrumb.xml',
+          'tkn-redeemable-products-in-pos/static/src/xml/Widgets/RedeemableCategorySimpleButton.xml',
        ],
     }
 }
