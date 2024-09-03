@@ -17,19 +17,25 @@
     # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Uncategorized',
-    'version': '0.1',
-
+    'version': '15.0.x.x',
     # any module necessary for this one to work correctly
-    'depends': ['base'],
-
+    'depends': ['pos_loyalty', 'sale'],
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
+        'views/pos_order_line_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
     ],
+     'assets': {
+        'point_of_sale._assets_pos': [
+            'tkn-refund_points/static/src/xml/pos_loyalty_refund.xml',
+            'tkn-refund_points/static/src/xml/pos_loyalty_receipt.xml',
+            'tkn-refund_points/static/src/js/pos_ticketscreen.js',
+        ],
+    },
 }
