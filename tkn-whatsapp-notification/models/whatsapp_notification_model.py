@@ -16,7 +16,8 @@ class PosOrder(models.Model):
         messages = self._build_messages(partner, pos_order)
         number = self._trim_phone_number(partner.phone)
         for message in messages:
-            self._send_whatsapp(number, message)
+            print(message)
+            #self._send_whatsapp(number, message)
 
     def _trim_phone_number(self, phone):
         return ''.join(filter(str.isdigit, phone))
@@ -42,15 +43,30 @@ class PosOrder(models.Model):
             """
             Formatea el mensaje con la información proporcionada.
             """
-            return (
-                f"¡Hola {partner_name}!👋\n\n"
-                f"Gracias por tu compra de ${order_amount}. "
-                f"Con esta transacción, has {'redimido' if redeemed_points else 'acumulado'} {redeemed_points or points_won} puntos. "
+            greeting = f"¡Hola {partner_name}!👋\n\n"
+
+            if order_amount < 0:
+                transaction_message = (
+                    f"Haz realizado una devolución de productos en Servicat, por lo que hemos restado {points_won} puntos de tu saldo.\n\n"
+                    
+                )
+            else:
+                transaction_type = "redimido" if redeemed_points else "acumulado"
+                points = redeemed_points or points_won
+                transaction_message = (
+                    f"Gracias por tu compra de ${order_amount}. "
+                    f"Con esta transacción, has {transaction_type} {points} puntos.\n\n"
+                )
+
+            info_message = (
                 f"Ahora, tu saldo total de puntos es de {total_points}.\n\n"
                 "Recuerda que puedes canjear tus puntos en cualquier momento. "
                 "Para más información sobre cómo redimir tus puntos, por favor visita este enlace: https://www.repuestoslineablanca.com\n\n"
                 "¡Esperamos verte pronto! Que tengas un gran día."
             )
+
+            return greeting + transaction_message + info_message
+
 
         items = pos_order['lines']
         total_redeemed_points = _get_redeemed_points(items)
@@ -73,15 +89,23 @@ class PosOrder(models.Model):
             None
         )
 
-        redeemed_points_message = _format_message(
-            message_data['partner_name'],
-            message_data['order_amount'],
-            None,
-            message_data['total_loyalty_points'],
-            message_data['total_redeemed_points']
-        )
-
+        if message_data['order_amount'] < 0:
+            refund_message = _format_message(
+                message_data['partner_name'],
+                message_data['order_amount'],
+                message_data['loyalty_points_won'] * -1,
+                message_data['total_loyalty_points'],
+                None
+            )
+            return [refund_message]
         if total_redeemed_points >= 1:
+            redeemed_points_message = _format_message(
+                message_data['partner_name'],
+                message_data['order_amount'],
+                None,
+                message_data['total_loyalty_points'],
+                message_data['total_redeemed_points']
+            )
             return [accumulated_points_message, redeemed_points_message]
         return [accumulated_points_message]
 
