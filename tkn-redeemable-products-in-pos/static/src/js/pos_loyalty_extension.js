@@ -26,13 +26,5 @@ odoo.define('tkn_redeemable_products_in_pos.pos_loyalty_extension', function (re
       }
     },
 
-    // get_spendable_points: function(){      
-    //   if (!this.pos.loyalty || !this.get_client()) {
-    //       return 0;
-    //   } else {
-    //       // console.log('get_spendable_points', round_pr(this.get_client().loyalty_points - this.get_spent_points(), 1))
-    //       return round_pr(this.pos.clientLoyaltyPoints - this.get_spent_points(), 1);
-    //   }
-    // },
   });
 });

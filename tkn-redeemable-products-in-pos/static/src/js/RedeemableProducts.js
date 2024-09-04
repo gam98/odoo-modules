@@ -11,6 +11,30 @@ odoo.define('tkn_redeemable_products_in_pos.RedeemableProducts', function (requi
     constructor() {
       super(...arguments);
       useListener('click', this.onClick);
+      this.state = {
+        points: 0,
+      };
+      this.env.pos.on('change:clientLoyaltyPoints', this.updatePoints, this);
+    }
+
+    mounted() {
+      this.updatePoints();
+    }
+
+    willUnmount() {
+      this.env.pos.off('change:clientLoyaltyPoints', this.updatePoints, this);
+    }
+
+    updatePoints() {
+      const currentLoyaltyPoints = this.env.pos.get('clientLoyaltyPoints');
+      
+      if(!currentLoyaltyPoints) {
+        const client = this.env.pos.get_client();
+        this.state.points = client.loyalty_points;
+        this.env.pos.set('clientLoyaltyPoints', client.loyalty_points);
+      } else {
+        this.state.points = currentLoyaltyPoints;
+      }
     }
 
     async onClick() {
@@ -23,12 +47,8 @@ odoo.define('tkn_redeemable_products_in_pos.RedeemableProducts', function (requi
         });
         return;
       }
-      
-      if (!this.env.pos.clientLoyaltyPoints) {
-        this.env.pos.clientLoyaltyPoints = client.loyalty_points;
-      }
 
-      const points = this.env.pos.clientLoyaltyPoints;
+      const points = this.state.points;
 
       if (points <= 0) {
         Gui.showPopup('ErrorPopup', {
@@ -44,12 +64,10 @@ odoo.define('tkn_redeemable_products_in_pos.RedeemableProducts', function (requi
         points,
       });
 
-      if (confirmed ) {
+      if (confirmed) {
         this.trigger('close-popup');
       }
-
     }
-
   }
 
   RedeemableProducts.template = 'RedeemableProducts';

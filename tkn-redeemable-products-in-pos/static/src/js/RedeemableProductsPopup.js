@@ -9,7 +9,7 @@ odoo.define('tkn_redeemable_products_in_pos.redeemableProductsPopup', function (
     constructor() {
       super(...arguments);
       this.state = {
-        pointsToRedeem: this.env.pos.clientLoyaltyPoints,
+        pointsToRedeem: this.env.pos.get('clientLoyaltyPoints'),
         selectedProduct: null,
         percentage: null,
         pointsNeeded: null
@@ -74,7 +74,9 @@ odoo.define('tkn_redeemable_products_in_pos.redeemableProductsPopup', function (
 
       order.apply_reward(reward);
 
-      this.env.pos.clientLoyaltyPoints = this.env.pos.clientLoyaltyPoints - this.state.pointsNeeded;
+      const currentLoyaltyPoints = this.env.pos.get('clientLoyaltyPoints');
+      
+      this.env.pos.set('clientLoyaltyPoints', currentLoyaltyPoints - this.state.pointsNeeded);
 
       this.props.resolve({ confirmed: true, payload: {} });
     }
