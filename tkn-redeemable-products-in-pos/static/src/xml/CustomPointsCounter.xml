@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="PointsCounterInherit" t-inherit="pos_loyalty.PointsCounter" t-inherit-mode="extension" owl="1">
+        <t t-if="order and (get_points_won() != 0 or get_points_spent() != 0)">
+            <xpath expr="//div[@class='loyalty-points']" position="replace">
+                <div class='loyalty-points-group'>
+                    <div class='loyalty-points-group-title'>
+                        Puntos
+                    </div>
+                    <div class='loyalty-points-subcards'>
+                        <div class='loyalty-points-subcard'>
+                            <div class='loyalty-points-subtitle'>
+                                Disponibles
+                            </div>
+                            <t t-if='get_points_spent()'>
+                                <div class="loyalty-points-spent line-operation">
+                                    <span class='value'>-<t t-esc='get_points_spent()' /></span>
+                                </div>
+                            </t>
+                            <div class='loyalty-points-total'>
+                                <span class='value'>
+                                    <t t-esc='get_points_total()' />
+                                </span>
+                            </div>
+                        </div>
+                        <div class='loyalty-points-subcard'>
+                            <div class='loyalty-points-subtitle'>
+                                A ganar
+                            </div>
+                            <t t-if='get_points_won()'>
+                                <div class="loyalty-points-won">
+                                    <span class='value'>+<t t-esc='get_points_won()'/></span>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </t>
+        <t t-else="">
+            <div></div>
+        </t>
+    </t>
+</templates>

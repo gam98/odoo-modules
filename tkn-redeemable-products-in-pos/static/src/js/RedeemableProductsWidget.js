@@ -7,10 +7,7 @@ odoo.define('tkn_redeemable_products_in_pos.RedeemableProductsWidget', function(
     const Registries = require('point_of_sale.Registries');
 
     class RedeemableProductsWidget extends PosComponent {
-        /**
-         * @param {Object} props
-         * @param {number?} props.startCategoryId
-         */
+
         constructor() {
             super(...arguments);
             useListener('switch-category-id', this._switchCategoryId);

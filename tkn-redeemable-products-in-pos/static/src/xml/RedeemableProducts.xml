@@ -2,50 +2,62 @@
 <templates id="template" xml:space="preserve">
   <t t-name="RedeemableProducts" owl="1">
     <span class="control-button">
-        Productos redimibles
+        Canje
     </span>
   </t>
 
   <t t-name="RedeemableProductsPopup" owl="1">
     <div role="dialog" class="modal-dialog">
-      <Draggable>
-        <div class="popup redeemable-products-wrapper">
-            <div>
-                <div class="popup-header">
-                    <h2><t t-esc="props.title"/></h2>
-                </div>
-                <div class="redeemable-container">
-               
-                    <!-- <RedeemableProductList products="props.products"  t-on-product-selected="onProductSelected"/> -->
-                    <RedeemableProductsWidget mobileSearchBarIsShown="props.mobileSearchBarIsShown" />
-                  
+      <div class="popup redeemable-products-wrapper">
+        <div class="popup-header">
+            <h2><t t-esc="props.title"/></h2>
+        </div>
 
-                  <div class="">
+        <div class="redeemable-container">
+            <div class="redeemable-products-widget">
+              <RedeemableProductsWidget mobileSearchBarIsShown="props.mobileSearchBarIsShown" />                
+            </div>              
+            <div class="redeemable-details">
+                <div class="card">
+                    <div class="section-title">Información del Cliente</div>
                     <p><strong>Cliente:</strong> <t t-esc="props.client.name"/></p>
                     <p><strong>Puntos disponibles:</strong> <t t-esc="props.points"/></p> 
-                    <t t-if="state.selectedProduct">
-                      <p><strong>Producto seleccionado:</strong> <t t-esc="state.selectedProduct.display_name"/></p> 
-                      <p><strong>Precio:</strong> $<t t-esc="state.selectedProduct.lst_price"/></p> 
-                    </t>
-                    <div class="redeemable-percentage-input">
-                      <label for="discount-percentage">Porcentaje:</label>
-                      <input id="discount-percentage" type="number" min="0" max="100" t-model="state.percentage" t-on-input="onInputChange"/>
-                    </div>
+                </div>
 
-                <!-- Mostrar puntos necesarios para canjear -->
-                  <t t-if="state.pointsNeeded">
-                      <p><strong>Puntos necesarios para canjear:</strong> <t t-esc="state.pointsNeeded"/></p>
-                  </t>                   
-                </div>
-                </div>
-              
-                <div class="footer">                      
-                    <button style="color:white;background:#6EC89B;border-color: transparent;" class="button confirm" t-on-click="confirm">Aceptar</button>
-                    <button class="button cancel" style="color: white;background: #D25B5B ;border-color: transparent;" t-on-click="cancel">Cancelar</button>
-                </div>
+                <t t-if="state.selectedProduct">
+                    <div class="card">
+                        <div class="section-title">Detalles del Producto</div>
+                        <p><strong>Producto seleccionado:</strong> <t t-esc="state.selectedProduct.display_name"/></p> 
+                        <p><strong>Precio:</strong> $<t t-esc="state.selectedProduct.lst_price"/></p>
+                        <div class="redeemable-percentage-input">
+                          <label for="discount-percentage"><strong>Porcentaje para calcular puntos necesarios:</strong></label>
+                            <input id="discount-percentage" type="number" min="0" max="100" t-model="state.percentage" t-on-input="onInputChange" placeholder="Ingresa un número"/>
+                        </div>
+                        <t t-if="state.pointsNeeded">
+                            <p><strong>Puntos necesarios para canjear este producto:</strong> <t t-esc="state.pointsNeeded"/></p>
+                        </t>
+                        <t t-if="state.pointsNeeded &gt; props.points">
+                            <div class="insufficient-points-warning">
+                                <p><strong>No tienes suficientes puntos para canjear este producto.</strong></p>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+                <t t-if="!state.selectedProduct">
+                    <div class="no-product-selected">
+                        <p><strong>Aun no has seleccionado un producto.</strong></p>
+                    </div>
+                </t>
             </div>
         </div>
-      </Draggable>
+      
+        <div class="footer redeemable-products-buttons-footer">
+            <div class="redeemable-products-buttons">
+              <button class="cancel" t-on-click="cancel">Cancelar</button>
+              <button  class="accept" t-on-click="confirm" t-att-disabled="isAcceptButtonDisabled">Aceptar</button>
+            </div>                    
+        </div>
+      </div>
     </div>
   </t>
 </templates>

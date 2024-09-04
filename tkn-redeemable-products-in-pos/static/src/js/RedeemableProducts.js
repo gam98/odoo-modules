@@ -23,9 +23,12 @@ odoo.define('tkn_redeemable_products_in_pos.RedeemableProducts', function (requi
         });
         return;
       }
+      
+      if (!this.env.pos.clientLoyaltyPoints) {
+        this.env.pos.clientLoyaltyPoints = client.loyalty_points;
+      }
 
-      const points = client.loyalty_points;
-      const products = this.env.pos.db.get_product_by_category(0);       
+      const points = this.env.pos.clientLoyaltyPoints;
 
       if (points <= 0) {
         Gui.showPopup('ErrorPopup', {
@@ -35,12 +38,10 @@ odoo.define('tkn_redeemable_products_in_pos.RedeemableProducts', function (requi
         return;
       }
 
-
       const { confirmed, payload } = await this.showPopup('RedeemableProductsPopup', {
         title: this.env._t('Canjear productos por puntos'),
         client,
         points,
-        products
       });
 
       if (confirmed ) {
@@ -48,8 +49,6 @@ odoo.define('tkn_redeemable_products_in_pos.RedeemableProducts', function (requi
       }
 
     }
-
-  
 
   }
 

@@ -46,6 +46,7 @@
           'tkn-redeemable-products-in-pos/static/src/js/Widgets/RedeemableCategoryBreadcrumb.js',
           'tkn-redeemable-products-in-pos/static/src/js/Widgets/RedeemableHomeCategoryBreadcrumb.js',
           'tkn-redeemable-products-in-pos/static/src/js/Widgets/RedeemableCategorySimpleButton.js',
+          'tkn-redeemable-products-in-pos/static/src/js/CustomPointsCounter.js',
        ],
        'web.assets_qweb': [
           'tkn-redeemable-products-in-pos/static/src/xml/RedeemableProducts.xml',
@@ -57,6 +58,7 @@
           'tkn-redeemable-products-in-pos/static/src/xml/Widgets/RedeemableCategoryBreadcrumb.xml',
           'tkn-redeemable-products-in-pos/static/src/xml/Widgets/RedeemableHomeCategoryBreadcrumb.xml',
           'tkn-redeemable-products-in-pos/static/src/xml/Widgets/RedeemableCategorySimpleButton.xml',
+          'tkn-redeemable-products-in-pos/static/src/xml/CustomPointsCounter.xml',
        ],
     }
 }

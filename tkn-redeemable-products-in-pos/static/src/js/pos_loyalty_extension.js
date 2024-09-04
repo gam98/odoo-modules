@@ -16,16 +16,23 @@ odoo.define('tkn_redeemable_products_in_pos.pos_loyalty_extension', function (re
         var points = 0;
 
         for (var line of this.get_orderlines()) {
-          var reward = this.pos.rewardsInMemory?.find((reward) => reward.id === line.product.id);
-          if (reward) {
+          var reward = this.pos.rewardsInMemory?.find((reward) => reward.id === line.product.id && line.price === 0);
+          if (reward) {            
             points += round_pr(line.get_quantity() * reward.point_cost, 1);
           }
         }
+
         return basePoints + points;
       }
-
     },
 
-
+    // get_spendable_points: function(){      
+    //   if (!this.pos.loyalty || !this.get_client()) {
+    //       return 0;
+    //   } else {
+    //       // console.log('get_spendable_points', round_pr(this.get_client().loyalty_points - this.get_spent_points(), 1))
+    //       return round_pr(this.pos.clientLoyaltyPoints - this.get_spent_points(), 1);
+    //   }
+    // },
   });
 });

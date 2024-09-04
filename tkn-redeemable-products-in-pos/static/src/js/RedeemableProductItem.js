@@ -6,15 +6,11 @@ odoo.define('point_of_sale.RedeemableProductItem', function (require) {
   const models = require('point_of_sale.models');
 
   class RedeemableProductItem extends PosComponent {
+
     selectProduct() {
-      this.trigger('product-selected', { product: this.props.product });
+      this.env.bus.trigger('product-selected', { product: this.props.product });
     }
-    /**
-     * For accessibility, pressing <space> should be like clicking the product.
-     * <enter> is not considered because it conflicts with the barcode.
-     *
-     * @param {KeyPressEvent} event
-     */
+
     spaceClickProduct(event) {
       if (event.which === 32) {
         this.trigger('click-product', this.props.product);

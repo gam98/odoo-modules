@@ -17,7 +17,7 @@
                 <span class="database-icon">
                     <i class="fa fa-database" t-on-click="loadProductFromDB"/>
                 </span>
-                <input t-ref="search-word-input" autofocus="autofocus" type="text" placeholder="Search Products...!!!" t-on-keyup="updateSearch" />
+                <input t-ref="search-word-input" autofocus="autofocus" type="text" placeholder="Buscar por nombre de producto..." t-on-keyup="updateSearch" />
             </t>
         </div>
           <t t-if="!props.hasNoCategories">

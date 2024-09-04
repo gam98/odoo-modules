@@ -5,7 +5,7 @@
         <div class="product-list-container">
             <div t-if="props.products.length != 0" class="product-list">
                 <t t-foreach="props.products" t-as="product" t-key="product.id">
-                    <RedeemableProductItem product="product" t-on-product-selected="selectProduct"/>
+                    <RedeemableProductItem product="product" t-on-product-selected="_onProductSelected"/>
                 </t>
             </div>
             <div t-else="" class="product-list-empty">

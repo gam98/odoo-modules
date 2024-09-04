@@ -2,7 +2,6 @@ odoo.define('tkn_redeemable_products_in_pos.redeemableProductsPopup', function (
   'use strict';
 
   const AbstractAwaitablePopup = require('point_of_sale.AbstractAwaitablePopup');
-  const { Gui } = require('point_of_sale.Gui');
   const Registries = require('point_of_sale.Registries');
 
   class RedeemableProductsPopup extends AbstractAwaitablePopup {
@@ -10,23 +9,33 @@ odoo.define('tkn_redeemable_products_in_pos.redeemableProductsPopup', function (
     constructor() {
       super(...arguments);
       this.state = {
-        pointsToRedeem: this.props.points,  // Inicialmente todos los puntos disponibles
-        products: this.props.products,
+        pointsToRedeem: this.env.pos.clientLoyaltyPoints,
         selectedProduct: null,
         percentage: null,
         pointsNeeded: null
       };
-      this.onProductSelected = this.onProductSelected.bind(this);
-
     }
 
-    onProductSelected(event) {
-      console.log('evnet!', event);
-      this.state.selectedProduct = event.detail.product;
-      console.log('selectedProduct!!!', this.state.selectedProduct);
-      // Aquí puedes hacer algo con el producto seleccionado, como calcular los puntos necesarios
+    _onProductSelected(event) {
+      this.state.selectedProduct = event.product;
+      this.updatePointsNeeded();
       this.render();
     }
+
+    mounted() {
+      this.env.bus.on('product-selected', this, this._onProductSelected);
+    }
+
+    willUnmount() {
+      this.env.bus.off('product-selected', this);
+    }
+
+    get isAcceptButtonDisabled() {
+      return !this.state.selectedProduct ||
+        this.state.pointsNeeded > this.props.points ||
+        !this.state.percentage;
+    }
+
     onInputChange(event) {
       this.state.percentage = parseFloat(event.target.value) || 0;
       this.updatePointsNeeded();
@@ -35,8 +44,8 @@ odoo.define('tkn_redeemable_products_in_pos.redeemableProductsPopup', function (
     updatePointsNeeded() {
       if (this.state.selectedProduct && this.state.percentage > 0) {
         const pointsNeeded = (this.state.selectedProduct.lst_price / this.state.percentage) * 100;
-        this.state.pointsNeeded = Math.ceil(pointsNeeded);  // Redondea al entero más cercano
-        this.render();  // Asegúrate de que la interfaz de usuario se actualice
+        this.state.pointsNeeded = Math.ceil(pointsNeeded);
+        this.render();
       } else {
         this.state.pointsNeeded = null;
         this.render();
@@ -57,14 +66,15 @@ odoo.define('tkn_redeemable_products_in_pos.redeemableProductsPopup', function (
         id: this.state.selectedProduct.id
       };
 
-      // Store the reward in the pos instance
       if (!this.env.pos.rewardsInMemory) {
         this.env.pos.rewardsInMemory = [];
       }
+
       this.env.pos.rewardsInMemory.push(reward);
 
-      // Apply the reward to the order
       order.apply_reward(reward);
+
+      this.env.pos.clientLoyaltyPoints = this.env.pos.clientLoyaltyPoints - this.state.pointsNeeded;
 
       this.props.resolve({ confirmed: true, payload: {} });
     }

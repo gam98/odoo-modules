@@ -1,29 +1,190 @@
 .redeemable-products-wrapper {
   max-width: 1200px !important;
+  background: #f7f7f7;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.popup-header h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 1rem;
+  text-align: center;
 }
 
 .redeemable-container {
   display: flex;
-  gap: 1rem;
-}
-
-.redeemable-percentage-input {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
+  gap: 1.5rem;
 }
 
 .redeemable-products-widget {
-  display: flex;
-  flex-direction: column;
-}
-
-.redeemable-products-list {
-  overflow: auto; 
+  overflow: auto;
   height: 600px;
   width: 650px;
 }
 
-.redeemable-products-control-panel {
-  width: 650px;
+.redeemable-details {
+  text-align: initial;
+  font-size: 16px;
+  color: #555;
+  padding: 10px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  flex: 1;  
+}
+
+.redeemable-details .card {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  padding: 15px;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.redeemable-details p {
+  margin: 0.5rem 0;
+}
+
+.redeemable-percentage-input {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.redeemable-percentage-input label {
+  font-weight: bold;
+}
+
+.redeemable-percentage-input input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.redeemable-percentage-input input::placeholder {
+  font-size: 16px;
+}
+
+.insufficient-points-warning p {
+  color: #fff;
+  background-color: rgba(255, 76, 76, 0.5);
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 1rem;
+}
+
+.no-product-selected {
+  margin-top: 1rem;
+  text-align: center;
+  background-color: rgb(229, 246, 253);
+  color: rgb(1, 67, 97);
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.no-product-selected p {
+  color: #777;
+  font-size: 16px;
+}
+
+.footer.redeemable-products-buttons-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 1.5rem;
+}
+
+.redeemable-products-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.redeemable-products-buttons .accept, .redeemable-products-buttons .cancel {
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.redeemable-products-buttons .accept {
+  color: white;
+  background: #4CAF50;
+}
+
+.redeemable-products-buttons .cancel {
+  color: #555555;
+  background: #d3d3d3;
+}
+
+
+/* Custom points counter */
+
+.loyalty-points-group {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #f5f5f5;
+  width: 50%;
+  margin-top: 10px;
+  margin-left: 7px;
+  float: left;
+}
+
+.loyalty-points-group-title {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.loyalty-points-subcards {
+  display: flex;
+  justify-content: space-between;
+}
+
+.loyalty-points-subcard {
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 0 5px;
+  background-color: #e6f7e6;
+  text-align: center;
+}
+
+.loyalty-points-subtitle {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.loyalty-points-spent .value,
+.loyalty-points-won .value {
+  font-size: 18px;
+  color: #555;
+}
+
+.loyalty-points-spent.line-operation {
+  border-bottom: 2px solid;
+  padding-bottom: .3rem;
+}
+
+.loyalty-points-total {
+  border-top: none !important;
+}
+
+.loyalty-points-total .value {
+  font-size: 18px;
+  color: #555;
 }
