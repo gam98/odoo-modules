@@ -59,6 +59,7 @@
           'tkn-redeemable-products-in-pos/static/src/xml/Widgets/RedeemableHomeCategoryBreadcrumb.xml',
           'tkn-redeemable-products-in-pos/static/src/xml/Widgets/RedeemableCategorySimpleButton.xml',
           'tkn-redeemable-products-in-pos/static/src/xml/CustomPointsCounter.xml',
+          'tkn-redeemable-products-in-pos/static/src/xml/CustomOrderline.xml',
        ],
     }
 }

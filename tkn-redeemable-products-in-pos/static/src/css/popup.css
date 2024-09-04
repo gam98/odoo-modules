@@ -188,3 +188,21 @@
   font-size: 18px;
   color: #555;
 }
+
+/* Custom Orderline */
+
+.point-cost-container {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.point-cost {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #e6f7e6;
+  width: fit-content;
+}

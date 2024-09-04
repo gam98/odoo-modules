@@ -18,11 +18,14 @@ odoo.define('tkn_redeemable_products_in_pos.RedeemableProducts', function (requi
     }
 
     mounted() {
-      this.updatePoints();
+      console.log('mounted!');
+      // this.env.pos.set('clientLoyaltyPoints', 0);
     }
 
     willUnmount() {
+      console.log('willUnmount!');
       this.env.pos.off('change:clientLoyaltyPoints', this.updatePoints, this);
+      this.env.pos.set('clientLoyaltyPoints', 0);
     }
 
     updatePoints() {
@@ -48,15 +51,17 @@ odoo.define('tkn_redeemable_products_in_pos.RedeemableProducts', function (requi
         return;
       }
 
-      const points = this.state.points;
-
-      if (points <= 0) {
+      if (client.loyalty_points <= 0) {
         Gui.showPopup('ErrorPopup', {
           title: this.env._t('Puntos insuficientes'),
-          body: this.env._t('Este cliente no tiene puntos suficientes para canjear puntos por productos.'),
+          body: this.env._t('Este cliente no tiene puntos suficientes para canjear puntos por productos.'),          
         });
         return;
       }
+
+      this.updatePoints();
+
+      const points = this.state.points;
 
       const { confirmed, payload } = await this.showPopup('RedeemableProductsPopup', {
         title: this.env._t('Canjear productos por puntos'),
