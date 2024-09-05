@@ -23,16 +23,16 @@
                                 </span>
                             </div>
                         </div>
-                        <div class='loyalty-points-subcard'>
-                            <div class='loyalty-points-subtitle'>
-                                A ganar
-                            </div>
-                            <t t-if='get_points_won()'>
+                        <t t-if='get_points_won()'>
+                          <div class='loyalty-points-subcard'>
+                              <div class='loyalty-points-subtitle'>
+                                  A ganar
+                              </div>
                                 <div class="loyalty-points-won">
-                                    <span class='value'>+<t t-esc='get_points_won()'/></span>
-                                </div>
-                            </t>
-                        </div>
+                                  <span class='value'>+<t t-esc='get_points_won()'/></span>
+                              </div>
+                          </div>
+                        </t>
                     </div>
                 </div>
             </xpath>

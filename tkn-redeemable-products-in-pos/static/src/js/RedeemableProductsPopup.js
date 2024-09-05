@@ -11,7 +11,7 @@ odoo.define('tkn_redeemable_products_in_pos.redeemableProductsPopup', function (
       this.state = {
         pointsToRedeem: this.env.pos.get('clientLoyaltyPoints'),
         selectedProduct: null,
-        percentage: null,
+        percentage: 5,
         pointsNeeded: null
       };
     }
@@ -92,6 +92,5 @@ odoo.define('tkn_redeemable_products_in_pos.redeemableProductsPopup', function (
   Registries.Component.add(RedeemableProductsPopup);
 
   return RedeemableProductsPopup;
-
 
 });

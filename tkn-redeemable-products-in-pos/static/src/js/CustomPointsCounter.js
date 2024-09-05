@@ -11,8 +11,8 @@ odoo.define('tkn_redeemable_products_in_pos.CustomPointsCounter', function(requi
       class extends PointsCounter {
 
           get_points_total() {
-              const spentPoints = super.get_points_spent();
-              const totalPoints = this.env.pos.get_client().loyalty_points - spentPoints;
+              const spentPoints = super.get_points_spent();              
+              const totalPoints = this.env.pos.get_client().loyalty_points - spentPoints;              
               this.env.pos.set('clientLoyaltyPoints', totalPoints);              
               return round_pr(totalPoints, this.env.pos.loyalty.rounding);
           }
@@ -23,3 +23,5 @@ odoo.define('tkn_redeemable_products_in_pos.CustomPointsCounter', function(requi
 
   return PointsCounterCustom;
 });
+
+

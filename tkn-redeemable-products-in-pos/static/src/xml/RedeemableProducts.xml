@@ -29,23 +29,32 @@
                         <div class="section-title">Detalles del Producto</div>
                         <p><strong>Producto seleccionado:</strong> <t t-esc="state.selectedProduct.display_name"/></p> 
                         <p><strong>Precio:</strong> $<t t-esc="state.selectedProduct.lst_price"/></p>
-                        <div class="redeemable-percentage-input">
-                          <label for="discount-percentage"><strong>Porcentaje para calcular puntos necesarios:</strong></label>
-                            <input id="discount-percentage" type="number" min="0" max="100" t-model="state.percentage" t-on-input="onInputChange" placeholder="Ingresa un número"/>
-                        </div>
-                        <t t-if="state.pointsNeeded">
-                            <p><strong>Puntos necesarios para canjear este producto:</strong> <t t-esc="state.pointsNeeded"/></p>
-                        </t>
-                        <t t-if="state.pointsNeeded &gt; props.points">
-                            <div class="insufficient-points-warning">
-                                <p><strong>No tienes suficientes puntos para canjear este producto.</strong></p>
-                            </div>
-                        </t>
                     </div>
+                    <div class="card">
+                      <div class="section-title">Cálculo de puntos necesarios para canjear el producto seleccionado</div>
+                      <div class="redeemable-percentage-input">
+                        <label for="discount-percentage"><strong>Porcentaje para calcular puntos necesarios:</strong></label>
+                          <input class="percentage-input" id="discount-percentage" type="number" min="0" max="100" t-model="state.percentage" t-on-input="onInputChange" placeholder="Ingresa un número"/>
+                      </div>
+                      <t t-if="state.pointsNeeded">
+                          <p><strong>Puntos necesarios para canjear este producto:</strong> <t t-esc="state.pointsNeeded"/></p>
+                      </t>
+                      <t t-if="state.pointsNeeded &gt; props.points">
+                          <div class="insufficient-points-warning">
+                              <p><strong>El cliente no tiene suficientes puntos para canjear este producto.</strong></p>
+                          </div>
+                      </t>
+                      <t t-if="state.pointsNeeded &amp;&amp; state.pointsNeeded &lt;= props.points">
+                          <div class="sufficient-points-message">
+                              <p><strong>El cliente tiene suficientes puntos para canjear este producto.</strong></p>
+                              <p><strong>Puntos restantes disponibles:</strong> <t t-esc="props.points - state.pointsNeeded"/></p>
+                          </div>
+                      </t>
+                  </div>
                 </t>
                 <t t-if="!state.selectedProduct">
                     <div class="no-product-selected">
-                        <p><strong>Aun no has seleccionado un producto.</strong></p>
+                        <p><strong>Aún no has seleccionado ningún producto.</strong></p>
                     </div>
                 </t>
             </div>

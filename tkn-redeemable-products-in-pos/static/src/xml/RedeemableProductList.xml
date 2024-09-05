@@ -12,13 +12,13 @@
                 <div class="product-list-empty">
                     <t t-if="props.searchWord !== ''">
                         <p>
-                            No results found for "
-                            <b t-esc="props.searchWord"></b>
+                            No se han encontrado resultados para "
+                          <b t-esc="props.searchWord"></b>
                             ".
                         </p>
                     </t>
                     <t t-else="">
-                        <p>There are no products in this category.</p>
+                        <p>No hay productos en esta categoría.</p>
                     </t>
                 </div>
             </div>

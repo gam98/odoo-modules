@@ -47,6 +47,7 @@
           'tkn-redeemable-products-in-pos/static/src/js/Widgets/RedeemableHomeCategoryBreadcrumb.js',
           'tkn-redeemable-products-in-pos/static/src/js/Widgets/RedeemableCategorySimpleButton.js',
           'tkn-redeemable-products-in-pos/static/src/js/CustomPointsCounter.js',
+          'tkn-redeemable-products-in-pos/static/src/js/ProductScreenLoyaltyPointsValidation.js',          
        ],
        'web.assets_qweb': [
           'tkn-redeemable-products-in-pos/static/src/xml/RedeemableProducts.xml',
@@ -63,3 +64,4 @@
        ],
     }
 }
+

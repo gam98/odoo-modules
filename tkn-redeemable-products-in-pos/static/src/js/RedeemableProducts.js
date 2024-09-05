@@ -30,8 +30,8 @@ odoo.define('tkn_redeemable_products_in_pos.RedeemableProducts', function (requi
 
     updatePoints() {
       const currentLoyaltyPoints = this.env.pos.get('clientLoyaltyPoints');
-      
-      if(!currentLoyaltyPoints) {
+
+      if (!currentLoyaltyPoints) {
         const client = this.env.pos.get_client();
         this.state.points = client.loyalty_points;
         this.env.pos.set('clientLoyaltyPoints', client.loyalty_points);
@@ -41,6 +41,18 @@ odoo.define('tkn_redeemable_products_in_pos.RedeemableProducts', function (requi
     }
 
     async onClick() {
+      const orders = this.env.pos.get_order().get_orderlines();
+      
+      const hasNonRedeemableProducts = orders.some(order => order.reward_id === undefined)
+
+      if(!hasNonRedeemableProducts) {
+        Gui.showPopup('ErrorPopup', {
+          title: this.env._t('Orden requerida para canje'),
+          body: this.env._t('Debe tener al menos un producto en la orden para poder canjear puntos. No es posible canjear puntos sin una orden activa que incluya otros productos.'),
+        })
+        return;
+      }
+
       const client = this.env.pos.get_client();
 
       if (!client) {
@@ -54,7 +66,7 @@ odoo.define('tkn_redeemable_products_in_pos.RedeemableProducts', function (requi
       if (client.loyalty_points <= 0) {
         Gui.showPopup('ErrorPopup', {
           title: this.env._t('Puntos insuficientes'),
-          body: this.env._t('Este cliente no tiene puntos suficientes para canjear puntos por productos.'),          
+          body: this.env._t('Este cliente no tiene puntos suficientes para canjear puntos por productos.'),
         });
         return;
       }
@@ -88,3 +100,5 @@ odoo.define('tkn_redeemable_products_in_pos.RedeemableProducts', function (requi
 
   return RedeemableProducts;
 });
+
+
