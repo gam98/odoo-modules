@@ -17,13 +17,7 @@ odoo.define('tkn_redeemable_products_in_pos.RedeemableProducts', function (requi
       this.env.pos.on('change:clientLoyaltyPoints', this.updatePoints, this);
     }
 
-    mounted() {
-      console.log('mounted!');
-      // this.env.pos.set('clientLoyaltyPoints', 0);
-    }
-
     willUnmount() {
-      console.log('willUnmount!');
       this.env.pos.off('change:clientLoyaltyPoints', this.updatePoints, this);
       this.env.pos.set('clientLoyaltyPoints', 0);
     }

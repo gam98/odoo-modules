@@ -8,6 +8,33 @@ odoo.define('tkn_redeemable_products_in_pos.pos_loyalty_extension', function (re
 
   models.Order = models.Order.extend({
 
+    get_won_points: function () {
+      if (!this.pos.loyalty || !this.get_client()) {
+        return 0;
+      }
+      var total_points = 0;
+      for (var line of this.get_orderlines()) {
+        if (line.get_reward()) {  // Reward products are ignored
+          continue;
+        }
+
+        var line_points = 0;
+        this.pos.loyalty.rules.forEach(function (rule) {
+          var rule_points = 0
+          if (rule.valid_product_ids.find(function (product_id) { return product_id === line.get_product().id })) {
+            rule_points += rule.points_quantity * line.get_quantity();
+            rule_points += rule.points_currency * line.get_price_with_tax();
+          }
+          if (Math.abs(rule_points) > Math.abs(line_points))
+            line_points = rule_points;
+        });
+
+        total_points += line_points;
+      }
+      total_points += this.get_total_with_tax() * this.pos.loyalty.points;
+      return Math.floor(total_points);
+    },
+
     get_spent_points: function () {
       var basePoints = _super_order.get_spent_points.apply(this, arguments);
       if (!this.pos.loyalty || !this.get_client()) {
@@ -118,7 +145,7 @@ odoo.define('tkn_redeemable_products_in_pos.pos_loyalty_extension', function (re
             price: - discount_fixed_amount,
             quantity: quantity_to_apply,
             merge: false,
-            extras: { reward_id: reward.id, price_manually_set: true },
+            extras: { reward_id: reward.id, price_manually_set: true, point_cost: reward.point_cost },
           });
 
         }

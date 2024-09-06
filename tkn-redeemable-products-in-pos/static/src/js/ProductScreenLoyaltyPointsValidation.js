@@ -19,22 +19,30 @@ odoo.define('tkn_redeemable_products_in_pos.ProductScreenLoyaltyPointsValidation
 
       let purchaseSummary = {
         rewardSpending: 0,
-        regularSpending: 0
-      }
+        regularSpending: 0,
+        giftCardSpending: 0,
+      };
 
       order.orderlines.models.forEach(line => {
         if (line.reward_id) {
-          purchaseSummary['rewardSpending'] += line.product.lst_price;
+          const isGiftCard = line.product.lst_price === 0;
+          if (isGiftCard) {
+            const discount = (line.point_cost / 100) * line.quantity;
+            purchaseSummary['giftCardSpending'] += discount;
+          } else {
+            purchaseSummary['rewardSpending'] += line.product.lst_price * line.quantity;
+          }
         } else {
-          purchaseSummary['regularSpending'] += line.product.lst_price;
+          purchaseSummary['regularSpending'] += line.product.lst_price * line.quantity;
         }
-      })
+      });
 
-      const totalInvoice = purchaseSummary['regularSpending'] + purchaseSummary['rewardSpending'];
 
-      const maxPointsValueAllowed = totalInvoice * 0.7;
+      const maxRedeemableAmount = purchaseSummary['regularSpending'] * 0.7;
 
-      if (purchaseSummary['rewardSpending'] > maxPointsValueAllowed) {
+      const totalSpendingInRewards = purchaseSummary['rewardSpending'] + purchaseSummary['giftCardSpending'];
+
+      if (totalSpendingInRewards > maxRedeemableAmount) {
         await this.showPopup('ErrorPopup', {
           title: this.env._t('Límite de canje de puntos superado'),
           body: this.env._t('No puedes canjear más del 70% del valor de tu factura en puntos de recompensa. Por favor, ajusta tu selección.'),

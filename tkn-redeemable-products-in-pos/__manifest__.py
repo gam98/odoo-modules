@@ -1,37 +1,33 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "tkn-redeemable-products-in-pos",
+    'name': "Custom POS Loyalty Program",
 
     'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
+       Extends the loyalty program in POS to allow customers to redeem products based on their loyalty points. Includes a custom button in POS that opens a modal with product search, shows points required, and adds the product to the order if sufficient points are available.""",
 
     'description': """
-        Long description of module's purpose
+        This module enhances the loyalty program functionality in Odoo POS by allowing customers to redeem products directly in the POS interface. 
+        Key features:
+        - Custom button in POS for accessing the loyalty redemption modal.
+        - Product search functionality within the modal.
+        - Display of loyalty points required to redeem a selected product.
+        - Validation to ensure the customer has enough points before adding the product to the order.
     """,
 
-    'author': "My Company",
-    'website': "http://www.yourcompany.com",
+    'author': 'Tinkin Tech Partner',
+    'website': 'https://www.tinkin.one',
 
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
-    'category': 'Uncategorized',
+    'category': 'Point of Sale',
     'version': '0.1',
 
-    # any module necessary for this one to work correctly
     'depends': ['base', 'point_of_sale'],
 
-    # always loaded
-    'data': [
-        # 'security/ir.model.access.csv',
-        'views/views.xml',
-        'views/templates.xml',
-    ],
-    # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
-    ],
+    'data': [],
+    
+    'license': 'LGPL-3',
+
+    'version': '15.0.x.x',
+
     'assets': {
        'point_of_sale.assets': [
           'tkn-redeemable-products-in-pos/static/src/css/popup.css',

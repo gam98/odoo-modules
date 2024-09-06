@@ -10,7 +10,6 @@ odoo.define('tkn_redeemable_products_in_pos.RedeemableProductList', function (re
       this.selectProduct = this.selectProduct.bind(this);
   }
     selectProduct(event) {
-      console.log('event.detail.product', event.detail.product);
       this.trigger('product-selected', { product: event.detail.product });
     }
   }

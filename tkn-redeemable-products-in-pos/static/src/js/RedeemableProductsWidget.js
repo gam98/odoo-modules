@@ -41,7 +41,6 @@ odoo.define('tkn_redeemable_products_in_pos.RedeemableProductsWidget', function(
                 list = this.env.pos.db.get_product_by_category(this.selectedCategoryId);
             }
 
-            console.log('list!', list);
             return list.sort(function (a, b) { return a.display_name.localeCompare(b.display_name) });
         }
         get subcategories() {
