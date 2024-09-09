@@ -30,7 +30,7 @@
 
     'assets': {
        'point_of_sale.assets': [
-          'tkn-redeemable-products-in-pos/static/src/css/popup.css',
+          'tkn-redeemable-products-in-pos/static/src/css/index.css',
           'tkn-redeemable-products-in-pos/static/src/js/RedeemableProducts.js',
           'tkn-redeemable-products-in-pos/static/src/js/RedeemableProductsPopup.js',
           'tkn-redeemable-products-in-pos/static/src/js/RedeemableProductList.js',
