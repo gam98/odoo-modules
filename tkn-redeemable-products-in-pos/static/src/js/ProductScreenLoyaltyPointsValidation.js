@@ -25,7 +25,7 @@ odoo.define('tkn_redeemable_products_in_pos.ProductScreenLoyaltyPointsValidation
 
       order.orderlines.models.forEach(line => {
         if (line.reward_id) {
-          const isGiftCard = line.product.lst_price === 0;
+          const isGiftCard = line.product.lst_price === 0 && line.is_gift_card;
           if (isGiftCard) {
             const discount = (line.point_cost / 100) * line.quantity;
             purchaseSummary['giftCardSpending'] += discount;
@@ -41,6 +41,8 @@ odoo.define('tkn_redeemable_products_in_pos.ProductScreenLoyaltyPointsValidation
       const maxRedeemableAmount = purchaseSummary['regularSpending'] * 0.7;
 
       const totalSpendingInRewards = purchaseSummary['rewardSpending'] + purchaseSummary['giftCardSpending'];
+
+      console.log(purchaseSummary)
 
       if (totalSpendingInRewards > maxRedeemableAmount) {
         await this.showPopup('ErrorPopup', {

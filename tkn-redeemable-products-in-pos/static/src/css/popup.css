@@ -208,7 +208,7 @@
 
 /* Custom Orderline */
 
-.point-cost-container {
+.point-cost-container, .points-to-win-container {
   display: flex;
   align-items: center;
   gap: .5rem;
@@ -216,10 +216,10 @@
   margin-bottom: 10px;
 }
 
-.point-cost {
+.point-cost, .points-to-win {
   border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 10px;
+  padding: 5px 10px;
   background-color: #e6f7e6;
   width: fit-content;
 }

@@ -1,4 +1,4 @@
-odoo.define('tkn_redeemable_products_in_pos.pos_loyalty_extension', function (require) {
+odoo.define('tkn_redeemable_products_in_pos', function (require) {
   "use strict";
 
   var models = require('point_of_sale.models');
@@ -12,26 +12,33 @@ odoo.define('tkn_redeemable_products_in_pos.pos_loyalty_extension', function (re
       if (!this.pos.loyalty || !this.get_client()) {
         return 0;
       }
+
       var total_points = 0;
+
       for (var line of this.get_orderlines()) {
-        if (line.get_reward()) {  // Reward products are ignored
+        if (line.get_reward()) {
           continue;
         }
 
         var line_points = 0;
+
         this.pos.loyalty.rules.forEach(function (rule) {
           var rule_points = 0
+
           if (rule.valid_product_ids.find(function (product_id) { return product_id === line.get_product().id })) {
             rule_points += rule.points_quantity * line.get_quantity();
             rule_points += rule.points_currency * line.get_price_with_tax();
           }
+
           if (Math.abs(rule_points) > Math.abs(line_points))
             line_points = rule_points;
         });
 
         total_points += line_points;
       }
+
       total_points += this.get_total_with_tax() * this.pos.loyalty.points;
+
       return Math.floor(total_points);
     },
 
@@ -43,9 +50,9 @@ odoo.define('tkn_redeemable_products_in_pos.pos_loyalty_extension', function (re
         var points = 0;
 
         for (var line of this.get_orderlines()) {
-          var reward = this.pos.rewardsInMemory?.find((reward) => reward.id === line.product.id && line.price === 0);
-          if (reward) {
-            points += round_pr(line.get_quantity() * reward.point_cost, 1);
+
+          if (line.is_custom_reward) {
+            points += round_pr(line.get_quantity() * line.point_cost, 1);
           }
         }
 
@@ -68,13 +75,24 @@ odoo.define('tkn_redeemable_products_in_pos.pos_loyalty_extension', function (re
         }
 
         let options = await this._getAddProductOptions(product);
-        await this.add_product(product, {
-          ...options,
-          price: 0,
-          quantity: 1,
-          merge: false,
-          extras: { reward_id: reward.id, price_manually_set: true, point_cost: reward.point_cost },
-        });
+
+        if (reward.is_custom_reward) {
+          await this.add_product(product, {
+            ...options,
+            price: 0,
+            quantity: 1,
+            merge: false,
+            extras: { reward_id: reward.id, price_manually_set: true, point_cost: reward.point_cost, is_custom_reward: true },
+          });
+        } else {
+          await this.add_product(product, {
+            ...options,
+            price: 0,
+            quantity: 1,
+            merge: false,
+            extras: { reward_id: reward.id, price_manually_set: true },
+          });
+        }
 
       } else if (reward.reward_type === 'discount') {
 
@@ -140,19 +158,68 @@ odoo.define('tkn_redeemable_products_in_pos.pos_loyalty_extension', function (re
           }
 
           let options = await this._getAddProductOptions(product);
-          await this.add_product(product, {
-            ...options,
-            price: - discount_fixed_amount,
-            quantity: quantity_to_apply,
-            merge: false,
-            extras: { reward_id: reward.id, price_manually_set: true, point_cost: reward.point_cost },
-          });
+
+          if (reward.name.toLowerCase().includes("gift card")) {
+            await this.add_product(product, {
+              ...options,
+              price: - discount_fixed_amount,
+              quantity: quantity_to_apply,
+              merge: false,
+              extras: { reward_id: reward.id, price_manually_set: true, point_cost: reward.point_cost, is_gift_card: true },
+            });
+          } else {
+            await this.add_product(product, {
+              ...options,
+              price: - discount_fixed_amount,
+              quantity: quantity_to_apply,
+              merge: false,
+              extras: { reward_id: reward.id, price_manually_set: true },
+            });
+          }
 
         }
       }
     },
 
-  });
-});
+    export_as_JSON: function () {
+      let json = _super_order.export_as_JSON.apply(this, arguments);
+      const order = this.pos.get_order();
+      if (order) {
+        order.orderlines.models.forEach(line => {
+          if (line.is_custom_reward) {
+            json.lines.forEach(jline => {
+              if (jline[jline.length - 1].reward_id === line.reward_id) {
+                jline[jline.length - 1].point_cost = line.point_cost;
+                jline[jline.length - 1].is_custom_reward = line.is_custom_reward;
+              }
+            })
+          }
 
+          if(line.is_gift_card) {
+            json.lines.forEach(jline => {
+              if (jline[jline.length - 1].reward_id === line.reward_id) {
+                jline[jline.length - 1].is_gift_card = line.is_gift_card;
+                jline[jline.length - 1].point_cost = line.point_cost;
+              }
+            })
+          }
+        })
+      }
+      return json;
+    },
+
+  });
+
+  var _super_orderline = models.Orderline;
+  models.Orderline = models.Orderline.extend({
+
+    init_from_JSON: function (json) {
+      _super_orderline.prototype.init_from_JSON.apply(this, arguments);
+      this.point_cost = json.point_cost;
+      this.is_custom_reward = json.is_custom_reward;
+      this.is_gift_card = json.is_gift_card;
+    },
+  });
+
+});
 

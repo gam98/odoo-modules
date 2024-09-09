@@ -63,14 +63,9 @@ odoo.define('tkn_redeemable_products_in_pos.redeemableProductsPopup', function (
           this.state.selectedProduct.id,
           this.state.selectedProduct.display_name
         ],
-        id: this.state.selectedProduct.id
+        id: this.state.selectedProduct.id,
+        is_custom_reward: true
       };
-
-      if (!this.env.pos.rewardsInMemory) {
-        this.env.pos.rewardsInMemory = [];
-      }
-
-      this.env.pos.rewardsInMemory.push(reward);
 
       order.apply_reward(reward);
 

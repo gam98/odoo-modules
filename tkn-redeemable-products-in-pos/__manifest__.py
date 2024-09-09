@@ -35,7 +35,7 @@
           'tkn-redeemable-products-in-pos/static/src/js/RedeemableProductsPopup.js',
           'tkn-redeemable-products-in-pos/static/src/js/RedeemableProductList.js',
           'tkn-redeemable-products-in-pos/static/src/js/RedeemableProductItem.js',
-          'tkn-redeemable-products-in-pos/static/src/js/pos_loyalty_extension.js',
+          'tkn-redeemable-products-in-pos/static/src/js/CustomLoyalty.js',
           'tkn-redeemable-products-in-pos/static/src/js/RedeemableProductsWidget.js',
           'tkn-redeemable-products-in-pos/static/src/js/RedeemableProductsWidgetControlPanel.js',
           'tkn-redeemable-products-in-pos/static/src/js/Widgets/RedeemableCategoryButton.js',
@@ -43,7 +43,8 @@
           'tkn-redeemable-products-in-pos/static/src/js/Widgets/RedeemableHomeCategoryBreadcrumb.js',
           'tkn-redeemable-products-in-pos/static/src/js/Widgets/RedeemableCategorySimpleButton.js',
           'tkn-redeemable-products-in-pos/static/src/js/CustomPointsCounter.js',
-          'tkn-redeemable-products-in-pos/static/src/js/ProductScreenLoyaltyPointsValidation.js',          
+          'tkn-redeemable-products-in-pos/static/src/js/ProductScreenLoyaltyPointsValidation.js',
+          'tkn-redeemable-products-in-pos/static/src/js/CustomOrderline.js',
        ],
        'web.assets_qweb': [
           'tkn-redeemable-products-in-pos/static/src/xml/RedeemableProducts.xml',
