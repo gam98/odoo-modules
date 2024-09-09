@@ -8,9 +8,9 @@
         This module integrates with the WhatsApp API to send notifications to customers about their loyalty points. 
         It informs them about points obtained and redeemed through their purchases in the loyalty program.
     """,
-    'author': 'Your Name or Company',
-    'website': 'https://www.yourwebsite.com',
-    'version': '1.0',
+    'author': 'Tinkin Tech Partner',
+    'website': 'https://www.tinkin.one',
+    'version': '15.0.x.x',
     'depends': [
         'base',
         'point_of_sale',
