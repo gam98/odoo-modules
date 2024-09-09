@@ -1,10 +1,7 @@
 import logging
 import requests
 from odoo import models, api
-from dotenv import load_dotenv
-import os
 
-load_dotenv()
 _logger = logging.getLogger(__name__)
 
 class PosOrder(models.Model):
@@ -13,10 +10,11 @@ class PosOrder(models.Model):
     @api.model
     def _process_payment_lines(self, pos_order, pos_session, draft, existing_payment):   
         partner = self.env['res.partner'].search([('id', '=', pos_order['partner_id'])], limit=1)
-        messages = self._build_messages(partner, pos_order)
-        number = self._trim_phone_number(partner.phone)
-        for message in messages:
-            self._send_whatsapp(number, message)
+        if partner:
+            messages = self._build_messages(partner, pos_order)
+            number = self._trim_phone_number(partner.phone)
+            for message in messages:
+                self._send_whatsapp(number, message)
 
     def _trim_phone_number(self, phone):
         if isinstance(phone, str):
@@ -107,6 +105,8 @@ class PosOrder(models.Model):
                 message_data['total_loyalty_points'],
                 message_data['total_redeemed_points']
             )
+            if message_data['loyalty_points_won'] == 0:
+                return [redeemed_points_message]
             return [accumulated_points_message, redeemed_points_message]
         return [accumulated_points_message]
 
@@ -116,8 +116,8 @@ class PosOrder(models.Model):
         Las variables de entorno son la URL del webhook y el api-key de la cuenta
         """
 
-        mercately_api_url = os.getenv("MERCATELY_API_URL")
-        mercately_api_key = os.getenv("MERCATELY_API_KEY")
+        mercately_api_url = self.env['ir.config_parameter'].sudo().get_param('MERCATELY_API_URL')
+        mercately_api_key = self.env['ir.config_parameter'].sudo().get_param('MERCATELY_API_KEY')
         
         payload = {
             "phone_number": number,
