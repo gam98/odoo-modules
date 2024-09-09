@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="RedeemableCategorySimpleButton" owl="1">
+        <span class="category-simple-button"
+              t-on-click="trigger('switch-category-id', props.category.id)">
+            <t t-esc="props.category.name" />
+        </span>
+    </t>
+
+</templates>

@@ -1,35 +1,32 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "tkn-reward-estimate",
+    'name': "Custom Loyalty Reward Program",
 
-    'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
-
+    'summary': 'Extension for the loyalty reward module to calculate promotional and additional points',
     'description': """
-        Long description of module's purpose
+        This module extends the functionality of the loyalty reward module to:
+        - Calculate points based on a percentage and cost price.
+        - Add a method to add points either manually or automatically.
+        - Display cost price only for promotional products.
+        - Modify the form view to adjust the visibility and calculation of points.
     """,
 
-    'author': "My Company",
-    'website': "http://www.yourcompany.com",
+    'author': 'Tinkin Tech Partner',
+    'website': 'https://www.tinkin.one',
 
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
-    'category': 'Uncategorized',
-    'version': '0.1',
+    'category': 'Point of Sale',
 
-    # any module necessary for this one to work correctly
+    'data': [],
+    
+    'license': 'LGPL-3',
+
+    'version': '15.0.x.x',
+
     'depends': ['base', 'pos_loyalty'],
 
-    # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
         'views/views.xml',
-        'views/templates.xml',
     ],
-    # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
-    ],
+
+    'demo': [],
 }

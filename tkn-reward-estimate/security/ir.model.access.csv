@@ -1,2 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_tkn-reward-estimate_tkn-reward-estimate,tkn-reward-estimate.tkn-reward-estimate,model_tkn-reward-estimate_tkn-reward-estimate,base.group_user,1,1,1,1

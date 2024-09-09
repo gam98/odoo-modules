@@ -1,0 +1,273 @@
+.redeemable-products-wrapper {
+  max-width: 1200px !important;
+  background: #f7f7f7;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.popup-header h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.redeemable-container {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.redeemable-products-widget {
+  width: 650px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.redeemable-products-list {
+  overflow: auto;
+  height: 500px;
+}
+
+.redeemable-details {
+  text-align: initial;
+  font-size: 16px;
+  color: #555;
+  padding: 10px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  flex: 1;
+}
+
+.redeemable-details .card {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  padding: 15px;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.redeemable-details p {
+  margin: 0.5rem 0;
+}
+
+.redeemable-percentage-input {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.redeemable-percentage-input label {
+  font-weight: bold;
+}
+
+.redeemable-percentage-input .percentage-input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.redeemable-percentage-input input::placeholder {
+  font-size: 16px;
+}
+
+.insufficient-points-warning p {
+  color: #58151c;
+  background-color: #f1aeb5;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 1rem;  
+}
+
+.sufficient-points-message {
+  color: #055160;
+  background-color: #cff4fc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 1rem;
+}
+
+.no-product-selected {
+  margin-top: 1rem;
+  text-align: center;
+  background-color: #cff4fc;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.no-product-selected p {
+  color: #055160;
+  font-size: 16px;
+}
+
+.footer.redeemable-products-buttons-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 1.5rem;
+}
+
+.redeemable-products-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.redeemable-products-buttons .accept,
+.redeemable-products-buttons .cancel {
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.redeemable-products-buttons .accept {
+  color: white;
+  background: #4CAF50;
+}
+
+.redeemable-products-buttons .cancel {
+  color: #555555;
+  background: #d3d3d3;
+}
+
+
+/* Custom points counter */
+
+.loyalty-points-group {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #f5f5f5;
+  width: 50%;
+  margin-top: 10px;
+  margin-left: 7px;
+  float: left;
+  width: fit-content;
+}
+
+.loyalty-points-group-title {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.loyalty-points-subcards {
+  display: flex;
+  justify-content: space-between;
+  width: fit-content;
+}
+
+.loyalty-points-subcard {
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 0 5px;
+  background-color: #e6f7e6;
+  text-align: center;
+}
+
+.loyalty-points-subtitle {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.loyalty-points-spent .value,
+.loyalty-points-won .value {
+  font-size: 18px;
+  color: #555;
+}
+
+.loyalty-points-spent.line-operation {
+  border-bottom: 2px solid;
+  padding-bottom: .3rem;
+}
+
+.loyalty-points-total {
+  border-top: none !important;
+}
+
+.loyalty-points-total .value {
+  font-size: 18px;
+  color: #555;
+}
+
+/* Custom Orderline */
+
+.point-cost-container, .points-to-win-container {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.point-cost, .points-to-win {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 5px 10px;
+  background-color: #e6f7e6;
+  width: fit-content;
+}
+
+/* Search box */
+
+.redeemable-products.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  margin: .5rem;
+}
+
+.redeemable-products.search-box .icon {
+  position: absolute;
+  left: 0;
+  margin-left: 10px;
+  z-index: 1;
+  color: #4f5b66;
+}
+
+.redeemable-products.search-box .clear-icon {
+  position: absolute;
+  right: 0;
+  margin-right: 24px;
+  z-index: 1;
+  color: #4f5b66;
+  cursor: pointer;
+}
+
+.redeemable-products.search-box .database-icon {
+  position: absolute;
+  left: 0;
+  margin-left: 34px;
+  z-index: 1;
+  color: #4f5b66;
+  cursor: pointer;
+}
+
+.redeemable-products.search-box input {
+  flex: 1;
+  font-size: medium;
+  height: 30px;
+  border: none;
+  color: #63717f;
+  padding-left: 56px;
+  padding-right: 38px;
+  border-radius: 5px;
+}
+
