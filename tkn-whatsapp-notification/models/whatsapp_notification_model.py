@@ -19,7 +19,9 @@ class PosOrder(models.Model):
             self._send_whatsapp(number, message)
 
     def _trim_phone_number(self, phone):
-        return ''.join(filter(str.isdigit, phone))
+        if isinstance(phone, str):
+            return ''.join(filter(str.isdigit, phone))
+        return ''
     
     def _build_messages(self, partner, pos_order):
         """
