@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-  <t t-name="RedeemableProducts" owl="1">
-    <span class="control-button">
-        Canjear
-    </span>
-  </t>
 
   <t t-name="RedeemableProductsPopup" owl="1">
     <div role="dialog" class="modal-dialog">
@@ -69,4 +64,5 @@
       </div>
     </div>
   </t>
+  
 </templates>

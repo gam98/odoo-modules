@@ -19,7 +19,7 @@ odoo.define('tkn_redeemable_products_in_pos.CustomOrderline', function (require)
           if (productExist) {
             rulePoints += rule.points_currency * this.props.line.price * this.props.line.quantity;
           }
-          
+
           if (Math.abs(rulePoints) > Math.abs(linePoints)) {
             linePoints = rulePoints;
           }
@@ -29,14 +29,14 @@ odoo.define('tkn_redeemable_products_in_pos.CustomOrderline', function (require)
       }
 
       get pointsToSpentInPromotionalReward() {
-        const linePoints = this.props.line.pos.loyalty.rewards.find(reward => reward.id === this.props.line.reward_id && this.props.line.price === 0);
+        const linePoints = this.props.line.pos.loyalty.rewards.find(reward => reward.id === this.props.line.reward_id);
 
         return linePoints;
       }
 
     }
 
-  Registries.Component.extend(Orderline, CustomOrderline); 
+  Registries.Component.extend(Orderline, CustomOrderline);
 
   return CustomOrderline;
 });

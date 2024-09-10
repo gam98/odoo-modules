@@ -21,6 +21,7 @@ odoo.define('tkn_redeemable_products_in_pos.ProductScreenLoyaltyPointsValidation
         rewardSpending: 0,
         regularSpending: 0,
         giftCardSpending: 0,
+        refundSpending: 0,
       };
 
       order.orderlines.models.forEach(line => {
@@ -32,17 +33,16 @@ odoo.define('tkn_redeemable_products_in_pos.ProductScreenLoyaltyPointsValidation
           } else {
             purchaseSummary['rewardSpending'] += line.product.lst_price * line.quantity;
           }
+        } else if (line.hasOwnProperty('refunded_orderline_id') && line['refunded_orderline_id'] !== undefined) {
+          purchaseSummary['refundSpending'] += line.product.lst_price * line.quantity;
         } else {
           purchaseSummary['regularSpending'] += line.product.lst_price * line.quantity;
         }
       });
 
-
       const maxRedeemableAmount = purchaseSummary['regularSpending'] * 0.7;
 
       const totalSpendingInRewards = purchaseSummary['rewardSpending'] + purchaseSummary['giftCardSpending'];
-
-      console.log(purchaseSummary)
 
       if (totalSpendingInRewards > maxRedeemableAmount) {
         await this.showPopup('ErrorPopup', {
