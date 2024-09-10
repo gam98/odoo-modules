@@ -13,7 +13,7 @@
                 </div>
               </div>
           </t>
-            <t t-if="props.line.is_custom_reward || props.line.is_gift_card">
+            <t t-elif="props.line.is_custom_reward || props.line.is_gift_card">
                 <div class="point-cost-container">
                   <div>
                     Puntos a restar: 
@@ -23,6 +23,18 @@
                   </div>
                 </div>
             </t>
+
+            <t t-elif="pointsToWin &lt; 0">
+              <div class="point-cost-container">
+                <div>
+                  Puntos a restar: 
+                </div>
+                <div class="point-cost">
+                  <t t-esc="pointsToWin" />
+                </div>
+              </div>
+            </t>
+            
             <t t-if="pointsToWin &gt; 0">
               <div class="points-to-win-container">
                 <div>

@@ -70,10 +70,10 @@ odoo.define('tkn_redeemable_products_in_pos.redeemableProductsPopup', function (
       order.apply_reward(reward);
 
       const currentLoyaltyPoints = this.env.pos.get('clientLoyaltyPoints');
-      
+
       this.env.pos.set('clientLoyaltyPoints', currentLoyaltyPoints - this.state.pointsNeeded);
 
-      this.props.resolve({ confirmed: true, payload: {} });
+      this.trigger('close-popup');
     }
   }
 

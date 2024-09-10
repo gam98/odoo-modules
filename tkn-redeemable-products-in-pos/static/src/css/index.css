@@ -1,3 +1,43 @@
+/* Custom reward button */
+.reward-modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+.reward-modal-body {
+  text-align: center;
+}
+
+.reward-modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 1rem;
+}
+
+.reward-button,
+.pvp-button {
+  background-color: #6ec89b;
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.reward-close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+/* Redeemable Products Popup */
 .redeemable-products-wrapper {
   max-width: 1200px !important;
   background: #f7f7f7;
@@ -133,8 +173,8 @@
 }
 
 .redeemable-products-buttons .accept {
-  color: white;
-  background: #4CAF50;
+  color: #fff;
+  background: #6ec89b;
 }
 
 .redeemable-products-buttons .cancel {
