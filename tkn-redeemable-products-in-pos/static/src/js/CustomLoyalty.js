@@ -38,7 +38,7 @@ odoo.define('tkn_redeemable_products_in_pos', function (require) {
           continue;
         }
 
-        total_points += line_points;
+        total_points += Math.floor(line_points);
       }
 
       total_points += this.get_total_with_tax() * this.pos.loyalty.points;
@@ -46,7 +46,7 @@ odoo.define('tkn_redeemable_products_in_pos', function (require) {
       if (total_points < 0) {
         return Math.ceil(total_points);
       } else {
-        return Math.floor(total_points);
+        return total_points;
       }
 
     },
@@ -84,7 +84,7 @@ odoo.define('tkn_redeemable_products_in_pos', function (require) {
 
         }
 
-        return basePoints + points;
+        return Math.floor(points) + Math.floor(basePoints);
       }
     },
 

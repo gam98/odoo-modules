@@ -21,7 +21,7 @@
             </t>
           </div>
           <t t-if="!props.hasNoCategories">
-              <div class="rightpane-header" t-att-class="{
+              <div class="rightpane-header redeemable-rightpane-header" t-att-class="{
                   'green-border-bottom': !displayCategImages,
                   'grey-border-bottom': displayCategImages,
               }">

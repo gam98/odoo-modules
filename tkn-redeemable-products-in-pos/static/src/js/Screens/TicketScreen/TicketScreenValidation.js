@@ -1,4 +1,4 @@
-odoo.define('tkn_redeemable_products_in_pos.Screens.TicketScreenValidation', function(require) {
+odoo.define('tkn_redeemable_products_in_pos.TicketScreenValidation', function(require) {
   'use strict';
 
   const TicketScreen = require('point_of_sale.TicketScreen');

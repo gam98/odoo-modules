@@ -12,7 +12,8 @@ odoo.define('tkn_redeemable_products_in_pos.redeemableProductsPopup', function (
         pointsToRedeem: this.env.pos.get('clientLoyaltyPoints'),
         selectedProduct: null,
         percentage: 2.5,
-        pointsNeeded: null
+        pointsNeeded: null,
+        priceWithTaxes: null
       };
     }
 
@@ -43,7 +44,18 @@ odoo.define('tkn_redeemable_products_in_pos.redeemableProductsPopup', function (
 
     updatePointsNeeded() {
       if (this.state.selectedProduct && this.state.percentage > 0) {
-        const pointsNeeded = (this.state.selectedProduct.lst_price / this.state.percentage) * 100;
+
+        const { taxes } = this.state.selectedProduct.pos;
+        const { taxes_id, lst_price } = this.state.selectedProduct;
+
+        let totalTaxes = 0;
+        for (const taxId of taxes_id) {
+          totalTaxes += taxes[taxId].amount;
+        }
+
+        const priceWithTaxes = (lst_price + (lst_price * totalTaxes / 100)).toFixed(2);
+        this.state.priceWithTaxes = priceWithTaxes;
+        const pointsNeeded = (priceWithTaxes / this.state.percentage) * 100;
         this.state.pointsNeeded = Math.ceil(pointsNeeded);
         this.render();
       } else {

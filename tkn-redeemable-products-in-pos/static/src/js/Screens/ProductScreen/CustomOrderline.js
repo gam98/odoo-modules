@@ -17,7 +17,7 @@ odoo.define('tkn_redeemable_products_in_pos.CustomOrderline', function (require)
           const productExist = rule.valid_product_ids.find(product_id => product_id === this.props.line.product.id);
 
           if (productExist) {
-            rulePoints += rule.points_currency * this.props.line.price * this.props.line.quantity;
+            rulePoints += rule.points_currency * this.props.line.get_price_with_tax();
           }
 
           if (Math.abs(rulePoints) > Math.abs(linePoints)) {
@@ -25,7 +25,12 @@ odoo.define('tkn_redeemable_products_in_pos.CustomOrderline', function (require)
           }
         })
 
-        return Math.floor(linePoints);
+        if(linePoints < 0) {
+          return Math.ceil(linePoints);
+        } else {
+          return Math.floor(linePoints);
+        }
+
       }
 
       get pointsToSpentInPromotionalReward() {
