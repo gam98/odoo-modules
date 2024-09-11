@@ -58,8 +58,6 @@ odoo.define('tkn_redeemable_products_in_pos.ProductScreenLoyaltyPointsValidation
         }
       });
 
-      console.log({purchaseSummary})
-
       const MINIMUM_REQUIRED_EXPENSE = 1;
       const hasRewardSpending = purchaseSummary['rewardSpending'] > 0;
 
