@@ -7,14 +7,26 @@ _logger = logging.getLogger(__name__)
 class PosOrder(models.Model):
     _inherit = 'pos.order'
 
+    def print_something(self):
+        print('something')
+        return
+
     @api.model
-    def _process_payment_lines(self, pos_order, pos_session, draft, existing_payment):   
-        partner = self.env['res.partner'].search([('id', '=', pos_order['partner_id'])], limit=1)
-        if partner:
-            messages = self._build_messages(partner, pos_order)
-            number = self._trim_phone_number(partner.phone)
-            for message in messages:
-                self._send_whatsapp(number, message)
+    def process_order_and_send_messages(self, order_data):
+        print('order_data', order_data)
+        uid = order_data['orderId']
+
+        # Buscar la orden de venta en el modelo sale.order
+        # TODO : VER COMO BUSCAR LA ORDEN CON EL UID
+        #order = self.env['sale.order'].search([('name', '=', uid)], limit=1)
+
+        # partner = self.env['res.partner'].search([('id', '=', order_data['partnerId'])], limit=1)
+        # if partner:
+        #     messages = self._build_messages(partner, pos_order)
+        #     number = self._trim_phone_number(partner.phone)
+        #     for message in messages:
+        #         print(message)
+        #         #self._send_whatsapp(number, message)
 
     def _trim_phone_number(self, phone):
         if isinstance(phone, str):
