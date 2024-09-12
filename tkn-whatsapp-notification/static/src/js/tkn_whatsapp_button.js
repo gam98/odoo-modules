@@ -19,7 +19,6 @@ odoo.define('custom_module.PosOrderCustomButton', function (require) {
         }
 
         sendOrderInfoToWhatsApp() {
-            // console.log(this.env)
             const orderData = {
                 partnerId: this.env.pos.attributes.selectedClient.id,
                 orderId: this.env.pos.attributes.selectedOrder.uid,
