@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-  <t t-name="RedeemableProducts" owl="1">
-    <span class="control-button">
-        Canjear
-    </span>
-  </t>
 
   <t t-name="RedeemableProductsPopup" owl="1">
-    <div role="dialog" class="modal-dialog">
+    <div role="dialog" class="redeemable-products-modal">
       <div class="popup redeemable-products-wrapper">
-        <div class="popup-header">
-            <h2><t t-esc="props.title"/></h2>
-        </div>
 
         <div class="redeemable-container">
             <div class="redeemable-products-widget">
@@ -28,7 +20,7 @@
                     <div class="card">
                         <div class="section-title">Detalles del Producto</div>
                         <p><strong>Producto seleccionado:</strong> <t t-esc="state.selectedProduct.display_name"/></p> 
-                        <p><strong>Precio:</strong> $<t t-esc="state.selectedProduct.lst_price"/></p>
+                        <p><strong>Precio:</strong> $<t t-esc="state.priceWithTaxes"/></p>
                     </div>
                     <div class="card">
                       <div class="section-title">Cálculo de puntos necesarios para canjear el producto seleccionado</div>
@@ -69,4 +61,5 @@
       </div>
     </div>
   </t>
+  
 </templates>

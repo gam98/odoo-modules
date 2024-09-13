@@ -34,12 +34,21 @@ odoo.define('tkn_redeemable_products_in_pos', function (require) {
             line_points = rule_points;
         });
 
-        total_points += line_points;
+        if (line_points < 0) {
+          continue;
+        }
+
+        total_points += Math.floor(line_points);
       }
 
       total_points += this.get_total_with_tax() * this.pos.loyalty.points;
 
-      return Math.floor(total_points);
+      if (total_points < 0) {
+        return Math.ceil(total_points);
+      } else {
+        return total_points;
+      }
+
     },
 
     get_spent_points: function () {
@@ -47,16 +56,35 @@ odoo.define('tkn_redeemable_products_in_pos', function (require) {
       if (!this.pos.loyalty || !this.get_client()) {
         return 0;
       } else {
-        var points = 0;
-
+        let points = 0;
+        
         for (var line of this.get_orderlines()) {
-
+          
           if (line.is_custom_reward) {
             points += round_pr(line.get_quantity() * line.point_cost, 1);
           }
+          
+          if (line.hasOwnProperty('refunded_orderline_id') && line['refunded_orderline_id'] !== undefined) {
+            let line_points = 0;
+            
+            line.pos.loyalty.rules.forEach(function (rule) {
+              let rule_points = 0
+
+              if (rule.valid_product_ids.find(function (product_id) { return product_id === line.get_product().id })) {
+                rule_points += rule.points_quantity * line.get_quantity();
+                rule_points += rule.points_currency * line.get_price_with_tax();
+              }
+
+              if (Math.abs(rule_points) > Math.abs(line_points))
+                line_points = rule_points;
+            });
+
+            points += Math.abs(line_points);
+          }
+
         }
 
-        return basePoints + points;
+        return Math.floor(points) + Math.floor(basePoints);
       }
     },
 
@@ -195,7 +223,7 @@ odoo.define('tkn_redeemable_products_in_pos', function (require) {
             })
           }
 
-          if(line.is_gift_card) {
+          if (line.is_gift_card) {
             json.lines.forEach(jline => {
               if (jline[jline.length - 1].reward_id === line.reward_id) {
                 jline[jline.length - 1].is_gift_card = line.is_gift_card;

@@ -6,7 +6,7 @@ odoo.define('point_of_sale.RedeemableProductItem', function (require) {
   const models = require('point_of_sale.models');
 
   class RedeemableProductItem extends PosComponent {
-
+    
     selectProduct() {
       this.env.bus.trigger('product-selected', { product: this.props.product });
     }
