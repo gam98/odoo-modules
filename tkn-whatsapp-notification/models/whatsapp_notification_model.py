@@ -25,8 +25,7 @@ class PosOrder(models.Model):
             messages = self._build_messages(partner, order_data)
             number = self._trim_phone_number(partner.phone)
             for message in messages:
-                print('message', message)
-                #self._send_whatsapp(number, message)
+                self._send_whatsapp(number, message)
 
     def _trim_phone_number(self, phone):
         if isinstance(phone, str):
@@ -41,24 +40,23 @@ class PosOrder(models.Model):
             """
             Calcula los puntos redimidos en la orden.
             """
-            # Obtiene todos los product_ids que son de recompensa
-            reward_product_ids = [item['product_id'][0] for item in items if 'product_id' in item]
+            reward_product_ids = [item['product_id'][0] for item in items if 'product_id' in item]    
+
+            rewards = self.env['loyalty.reward'].search([('gift_product_id', 'in', reward_product_ids)])
+
+            point_cost_map = {}
+
+            for reward in rewards:
+                product_id = reward['gift_product_id'][0]  # Tomar el ID del producto
+                point_cost_map[int(product_id)] = reward['point_cost']
+
+            total_points = 0
+
+            for product_id in reward_product_ids:
+                if product_id in point_cost_map:
+                    total_points += point_cost_map[product_id]
             
-            # Busca todos los productos de recompensa relacionados
-            rewards = self.env['loyalty.reward'].search([('product_id', 'in', reward_product_ids)])
-            
-            # Crea un diccionario para acceder rápidamente a los puntos por product_id
-            reward_points = {reward.product_id.id: reward.point_cost for reward in rewards}
-
-            total_redeemed_points = 0
-
-            # Calcula el total de puntos redimidos
-            for item in items:
-                product_id = item.get('product_id', [])[0]
-                if product_id in reward_points:
-                    total_redeemed_points += reward_points[product_id]
-
-            return total_redeemed_points
+            return total_points
 
         def _format_message(partner_name, order_amount, points_won, total_points, redeemed_points):
             """
@@ -91,10 +89,8 @@ class PosOrder(models.Model):
         
         line_ids = pos_order['lines']
         lines = self.env['pos.order.line'].browse(line_ids)
-        lines_data = lines.read()
-        print('lines_data', lines_data)
-        
-        total_redeemed_points = 0 #_get_redeemed_points(lines)
+        lines_data = lines.read()       
+        total_redeemed_points = _get_redeemed_points(lines_data)
 
         loyalty_points_won = pos_order['loyalty_points'] + total_redeemed_points
         total_loyalty_points = partner.loyalty_points

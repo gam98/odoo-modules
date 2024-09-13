@@ -16,11 +16,6 @@
         'point_of_sale',
     ],
     'data': [],
-    'assets': {
-        'point_of_sale.assets': [
-            'tkn-whatsapp-notification/static/src/js/tkn_whatsapp_button.js',
-        ],
-    },
     'application': True,
     'installable': True,
     'license': 'LGPL-3',
