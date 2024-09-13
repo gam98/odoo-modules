@@ -19,6 +19,7 @@ odoo.define('tkn_redeemable_products_in_pos.redeemableProductsPopup', function (
 
     _onProductSelected(event) {
       this.state.selectedProduct = event.product;
+      console.log('redeemableProductsPopup ->', this.state.selectedProduct);
       this.updatePointsNeeded();
       this.render();
     }
@@ -45,15 +46,17 @@ odoo.define('tkn_redeemable_products_in_pos.redeemableProductsPopup', function (
     updatePointsNeeded() {
       if (this.state.selectedProduct && this.state.percentage > 0) {
 
-        const { taxes } = this.state.selectedProduct.pos;
-        const { taxes_id, lst_price } = this.state.selectedProduct;
+        // const { taxes } = this.state.selectedProduct.pos;
+        // const { taxes_id, lst_price } = this.state.selectedProduct;
+        const { lst_price } = this.state.selectedProduct;
 
-        let totalTaxes = 0;
-        for (const taxId of taxes_id) {
-          totalTaxes += taxes[taxId].amount;
-        }
+        // let totalTaxes = 0;
+        // for (const taxId of taxes_id) {
+        //   totalTaxes += taxes[taxId].amount;
+        // }
 
-        const priceWithTaxes = (lst_price + (lst_price * totalTaxes / 100)).toFixed(2);
+        // const priceWithTaxes = (lst_price + (lst_price * totalTaxes / 100)).toFixed(2);
+        const priceWithTaxes = (lst_price + ( lst_price * 15 / 100)).toFixed(2);
         this.state.priceWithTaxes = priceWithTaxes;
         const pointsNeeded = (priceWithTaxes / this.state.percentage) * 100;
         this.state.pointsNeeded = Math.ceil(pointsNeeded);
