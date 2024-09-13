@@ -7,15 +7,18 @@ odoo.define('tkn_redeemable_products_in_pos.ProductScreenLoyaltyPointsValidation
   const ProductScreenLoyaltyPointsValidation = ProductScreen => class extends ProductScreen {
 
     priceWithTaxes(line) {
-      const { taxes } = line.pos;
-      const { lst_price, taxes_id } = line.product;
+      console.log('ProductScreenLoyaltyPointsValidation ->', line);
+      // const { taxes } = line.pos;
+      // const { lst_price, taxes_id } = line.product;
+      const { lst_price } = line.product;
 
-      let totalTaxes = 0;
-      for (const taxId of taxes_id) {
-        totalTaxes += taxes[taxId].amount;
-      }
+      // let totalTaxes = 0;
+      // for (const taxId of taxes_id) {
+      //   totalTaxes += taxes[taxId].amount;
+      // }
 
-      const priceWithTaxes = (lst_price + (lst_price * totalTaxes / 100)).toFixed(2);
+      // const priceWithTaxes = (lst_price + (lst_price * totalTaxes / 100)).toFixed(2);
+      const priceWithTaxes = (lst_price + ( lst_price * 15 / 100)).toFixed(2);
 
       return priceWithTaxes;
     }
