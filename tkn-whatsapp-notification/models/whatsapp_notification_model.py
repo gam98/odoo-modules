@@ -89,7 +89,7 @@ class PosOrder(models.Model):
         
         line_ids = pos_order['lines']
         lines = self.env['pos.order.line'].browse(line_ids)
-        lines_data = lines.read()       
+        lines_data = lines.read()
         total_redeemed_points = _get_redeemed_points(lines_data)
 
         loyalty_points_won = pos_order['loyalty_points'] + total_redeemed_points
