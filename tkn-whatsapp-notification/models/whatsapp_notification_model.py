@@ -5,13 +5,24 @@ from odoo import models, api
 _logger = logging.getLogger(__name__)
 
 class PosOrder(models.Model):
-    _inherit = 'pos.order'
+    _inherit = 'pos.order'  
+   
+    def create_from_ui(self, orders, draft=False):
+        # pylint: disable=no-member
+        res = super(PosOrder, self).create_from_ui(orders, draft)
+        for order in orders:
+            existing_order = self.env['pos.order'].search(['|', ('id', '=', order['data'].get('server_id')), ('pos_reference', '=', order['data']['name'])], limit=1)
+            if existing_order:
+                self.process_order_and_send_messages(existing_order)  
+        return res
 
     @api.model
-    def _process_payment_lines(self, pos_order, pos_session, draft, existing_payment):   
-        partner = self.env['res.partner'].search([('id', '=', pos_order['partner_id'])], limit=1)
+    def process_order_and_send_messages(self, existing_order):
+        order_data = existing_order.read()[0]
+        partner_id = order_data['partner_id'][0]
+        partner = self.env['res.partner'].search([('id', '=', partner_id)], limit=1)
         if partner:
-            messages = self._build_messages(partner, pos_order)
+            messages = self._build_messages(partner, order_data)
             number = self._trim_phone_number(partner.phone)
             for message in messages:
                 self._send_whatsapp(number, message)
@@ -29,14 +40,23 @@ class PosOrder(models.Model):
             """
             Calcula los puntos redimidos en la orden.
             """
-            reward_items = [item for item in items if 'reward_id' in item[2]]
-            total_redeemed_points = 0
+            reward_product_ids = [item['product_id'][0] for item in items if 'product_id' in item]    
 
-            for item in reward_items:
-                product = self.env['loyalty.reward'].browse(item[2]['reward_id'])
-                total_redeemed_points += product.point_cost
+            rewards = self.env['loyalty.reward'].search([('gift_product_id', 'in', reward_product_ids)])
 
-            return total_redeemed_points
+            point_cost_map = {}
+
+            for reward in rewards:
+                product_id = reward['gift_product_id'][0]  # Tomar el ID del producto
+                point_cost_map[int(product_id)] = reward['point_cost']
+
+            total_points = 0
+
+            for product_id in reward_product_ids:
+                if product_id in point_cost_map:
+                    total_points += point_cost_map[product_id]
+            
+            return total_points
 
         def _format_message(partner_name, order_amount, points_won, total_points, redeemed_points):
             """
@@ -66,18 +86,21 @@ class PosOrder(models.Model):
 
             return greeting + transaction_message + info_message
 
+        
+        line_ids = pos_order['lines']
+        lines = self.env['pos.order.line'].browse(line_ids)
+        lines_data = lines.read()
+        total_redeemed_points = _get_redeemed_points(lines_data)
 
-        items = pos_order['lines']
-        total_redeemed_points = _get_redeemed_points(items)
         loyalty_points_won = pos_order['loyalty_points'] + total_redeemed_points
-        total_loyalty_points = partner.loyalty_points + pos_order['loyalty_points']
+        total_loyalty_points = partner.loyalty_points
 
         message_data = {
             "partner_name": partner.name,
             "order_amount": pos_order['amount_total'],
             "loyalty_points_won": int(loyalty_points_won),
             "total_loyalty_points": int(total_loyalty_points),
-            "total_redeemed_points": int(total_redeemed_points),
+            "total_redeemed_points": int(total_redeemed_points), 
         }
 
         accumulated_points_message = _format_message(

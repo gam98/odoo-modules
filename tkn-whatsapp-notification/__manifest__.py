@@ -15,8 +15,7 @@
         'base',
         'point_of_sale',
     ],
-    'data': [
-    ],
+    'data': [],
     'application': True,
     'installable': True,
     'license': 'LGPL-3',
