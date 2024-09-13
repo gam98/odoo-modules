@@ -25,7 +25,8 @@ class PosOrder(models.Model):
             messages = self._build_messages(partner, order_data)
             number = self._trim_phone_number(partner.phone)
             for message in messages:
-                self._send_whatsapp(number, message)
+                print(message)
+                #self._send_whatsapp(number, message)
 
     def _trim_phone_number(self, phone):
         if isinstance(phone, str):
