@@ -13,6 +13,7 @@
     'depends': [
         'base',
         'point_of_sale',
+        'ek_pos_retail_with_sap',
     ],
     'data': [],
     'application': True,
