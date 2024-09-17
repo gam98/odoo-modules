@@ -3,45 +3,35 @@
     'name': "tkn_technical_quote_generator",
 
     'summary': """
-        Saaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa""",
+        Generation of PDF Quotation in Ecommerce with differentiated prices for public, technical and referred customers.""",
 
     'description': """
-        aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+        This custom module allows you to generate a PDF quotation from the ecommerce, offering three types of prices: retail price, differentiated price for technicians and special price for referred customers. It includes advanced functionality to define and display prices according to the type of customer, providing an optimized experience for the presentation of quotations.
     """,
 
-    'author': "My Company",
-    'website': "http://www.yourcompany.com",
+    'author': 'Tinkin Tech Partner',
 
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
-    'category': 'Uncategorized',
+    'website': 'https://www.tinkin.one',
+
+    'category': 'Website',
+
     'version': '0.1',
 
-    # any module necessary for this one to work correctly
-    'depends': ['website', 'sale', 'website_payment', 'website_mail', 'portal_rating', 'digest'],
+    'depends': ['website', 'sale', 'website_payment'],
+        
+    'license': 'LGPL-3',
 
-    # always loaded
+    'version': '15.0.x.x',
+
     'data': [
-        # 'security/ir.model.access.csv',
-        'views/views.xml',
         'views/templates.xml',
-        'report/quotation_report.xml',
-        'views/report_sale_order_templates.xml',  # Incluir la plantilla
-        'views/report_sale_order_action.xml',     # Incluir la acción del reporte
-        'security/ir.model.access.csv',
+        'report/price_for_referred_customer/quotation_report_templates.xml',
+        'report/price_for_referred_customer/quotation_report_action.xml',    
+        'report/retail_price/quotation_report_action.xml',
+        'report/retail_price/quotation_report_templates.xml',
+        'report/differentiated_price_for_being_technician/quotation_report_action.xml',
+        'report/differentiated_price_for_being_technician/quotation_report_templates.xml',
     ],
+
     'demo': [],
-    'assets': {
-      'website_sale.assets': [
-        'tkn-technical_quote_generator/static/src/css/index.css',
-        'tkn_technical_quote_generator/static/src/js/TechnicalQuoteGeneratorPopup.js',
-        'tkn_technical_quote_generator/static/src/js/TechnicalQuoteGeneratorButton.js',
-        'tkn_technical_quote_generator/static/src/js/QuoteModal.js',
-      ],
-      'web.assets_qweb': [
-        'tkn_technical_quote_generator/static/src/xml/TechnicalQuoteGeneratorButton.xml',
-        'tkn_technical_quote_generator/static/src/xml/TechnicalQuoteGeneratorPopup.xml',
-      ]
-    }
 }

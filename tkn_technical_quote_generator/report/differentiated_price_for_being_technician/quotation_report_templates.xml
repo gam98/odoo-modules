@@ -1,0 +1,83 @@
+<odoo>
+  <template id="report_differentiated_price_for_being_technician">
+    <t t-call="web.external_layout">
+      <div class="page">
+        <main>
+          <t t-foreach="docs" t-as="doc">
+
+            <!-- Mostrar el nombre del técnico -->
+            <div class="d-flex justify-content-between">
+              <div class="d-flex flex-column">
+                <p class="font-weight-bold mb-0">Nombre del técnico</p>
+                <p t-field="doc.partner_id.name" />
+              </div>
+              <div class="d-flex flex-column">
+                <p class="font-weight-bold mb-0">Fecha de cotización</p>
+                <p t-field="doc.date_order" t-options='{"format": "dd/MM/yyyy"}' />
+              </div>
+            </div>
+
+            <!-- Mostrar todas las propiedades de doc -->
+            <div>
+              <h4>Propiedades de doc:</h4>
+              <ul>
+                <p class="font-weight-bold mb-0">Tipo de Identificación</p>
+                <p t-field="doc.partner_id.l10n_latam_identification_type_id.name" />
+                <p class="font-weight-bold mb-0">Número de Identificación</p>
+                <p t-field="doc.partner_id.vat" />
+
+              </ul>
+            </div>
+
+            <!-- Detalle de la cotización (ya existente) -->
+            <p class="font-weight-bold">Detalle de la cotización</p>
+            <table class="table table-sm">
+              <thead>
+                <tr class="text-muted" style="background-color: #dddd">
+                  <th>PRODUCTO</th>
+                  <th>PRECIO</th>
+                  <th>CANT</th>
+                  <th>SUBTOTAL</th>
+                </tr>
+              </thead>
+              <tbody>
+                <t t-foreach="doc.order_line" t-as="line">
+                  <tr>
+                    <td>
+                      <span class="font-weight-bold" t-field="line.product_id.name" />
+                    </td>
+                    <td>
+                      <span t-field="line.price_unit" />
+                    </td>
+                    <td>
+                      <span t-field="line.product_uom_qty" />
+                    </td>
+                    <td>
+                      <span t-field="line.price_subtotal" />
+                    </td>
+                  </tr>
+                </t>
+              </tbody>
+            </table>
+
+            <div class="float-right w-25">
+              <div class="d-flex justify-content-between align-items-center p-2">
+                <p class="font-weight-bold m-0">SUBTOTAL</p>
+                <p>$ <span t-esc="doc.amount_total" t-options='{"widget": "float", "precision": 2}' /></p>
+              </div>
+              <div class="d-flex justify-content-between align-items-center p-2">
+                <p class="font-weight-bold m-0">DESCUENTO</p>
+                <p>-</p>
+              </div>
+              <div
+                class="d-flex justify-content-between align-items-center font-weight-bold bg-light p-2">
+                <p class="m-0">TOTAL</p>
+                <span t-field="doc.amount_total" />
+              </div>
+            </div>
+          </t>
+        </main>
+      </div>
+    </t>
+  </template>
+</odoo>

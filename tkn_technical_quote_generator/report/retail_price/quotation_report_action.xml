@@ -1,0 +1,11 @@
+<odoo>
+  <record id="action_report_retail_price" model="ir.actions.report">
+    <field name="name">Cotización PVP</field>
+    <field name="model">sale.order</field>
+    <field name="report_type">qweb-pdf</field>
+    <field name="report_name">tkn_technical_quote_generator.report_retail_price</field>
+    <field name="report_file">tkn_technical_quote_generator.report_retail_price</field>
+    <field name="binding_model_id" ref="sale.model_sale_order"/>
+    <field name="binding_type">report</field>
+  </record>
+</odoo>

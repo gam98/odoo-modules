@@ -1,19 +1,5 @@
 <odoo>
-  <template id="external_layout_custom" inherit_id="web.external_layout_standard" primary="True">
-    <xpath expr="//div[@class='header']" position="replace">
-        <div class="header">
-            <div class="w-100 mb-4 d-flex justify-content-between align-items-center px-5 py-3" style="background-color: #003da7; height: 100px">
-                <img src="/tkn_technical_quote_generator/static/img/servicat.png"/>
-                <div class="border-left pl-3 border-white text-white h-100">
-                    <p class="mb-0 text-l text-right">+1(650) 555-0111</p>
-                    <p class="mb-0">hello@mycompany.com</p>
-                </div>
-            </div>
-        </div>
-    </xpath>
-</template>
-
-  <template id="report_sale_order_document_custom">
+  <template id="report_price_for_referred_customer">
     <t t-call="web.external_layout">
       <div class="page">
         <main>
@@ -25,12 +11,12 @@
               </div>
               <div class="d-flex flex-column">
                 <p class="font-weight-bold mb-0">Código de referido</p>
-                <!-- <t t-if="doc.applied_coupon_ids">
+                <t t-if="doc.applied_coupon_ids">
                   <p t-field="doc.applied_coupon_ids.code"/>
-                </t> -->
-                <!-- <t t-else=""> -->
+                </t>
+                <t t-else="">
                   <p>No</p>
-                <!-- </t> -->
+                </t>
               </div>
               <div class="d-flex flex-column">
                 <p class="font-weight-bold mb-0">Fecha de cotización</p>
@@ -50,14 +36,14 @@
               </thead>
               <tbody>
                 <t t-foreach="doc.order_line" t-as="line">
-                  <!-- <t t-if="not line.is_reward_line"> -->
+                  <t t-if="not line.is_reward_line">
                     <tr>
                       <td><span class="font-weight-bold" t-field="line.product_id.name"/></td>
                       <td><span t-field="line.price_unit"/></td>
                       <td><span t-field="line.product_uom_qty"/></td>
                       <td><span t-field="line.price_subtotal"/></td>
                     </tr>
-                  <!-- </t> -->
+                  </t>
                 </t>
               </tbody>
             </table>
@@ -65,19 +51,19 @@
             <div class="float-right w-25">
               <div class="d-flex justify-content-between align-items-center p-2">
                 <p class="font-weight-bold m-0">SUBTOTAL</p>
-                <!-- <p>$ <span t-esc="doc.amount_total - doc.reward_amount" t-options='{"widget": "float", "precision": 2}'/></p> -->
+                <p>$ <span t-esc="doc.amount_total - doc.reward_amount" t-options='{"widget": "float", "precision": 2}'/></p>
                 <p>$ <span t-esc="doc.amount_total" t-options='{"widget": "float", "precision": 2}'/></p>
               </div>
               <div class="d-flex justify-content-between align-items-center p-2">
                 <p class="font-weight-bold m-0">DESCUENTO</p>
-                <!-- <t t-if="doc.reward_amount">
+                <t t-if="doc.reward_amount">
                   <p>
                     <span t-esc="abs(int(((doc.reward_amount * -1) * 100) / (doc.amount_total + (doc.reward_amount * -1))))" t-options='{"widget": "float", "precision": 2}'/>%
                   </p>
-                </t> -->
-                <!-- <t t-else=""> -->
+                </t>
+                <t t-else="">
                   <p>-</p>
-                <!-- </t> -->
+                </t>
               </div>
               <div class="d-flex justify-content-between align-items-center font-weight-bold bg-light p-2">
                 <p class="m-0">TOTAL</p>
