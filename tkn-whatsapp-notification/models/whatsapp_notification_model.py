@@ -5,28 +5,29 @@ from odoo import models, api
 _logger = logging.getLogger(__name__)
 
 class PosOrder(models.Model):
-    _inherit = 'pos.order'  
+    _inherit = 'pos.order'
    
+    @api.model
     def create_from_ui(self, orders, draft=False):
         # pylint: disable=no-member
         res = super(PosOrder, self).create_from_ui(orders, draft)
         for order in orders:
             existing_order = self.env['pos.order'].search(['|', ('id', '=', order['data'].get('server_id')), ('pos_reference', '=', order['data']['name'])], limit=1)
             if existing_order:
-                self.process_order_and_send_messages(existing_order)  
+                booked_coupons = order['data']['bookedCouponCodes']
+                if booked_coupons == {}:
+                    self.process_order_and_send_messages(existing_order)
         return res
 
-    @api.model
-    def process_order_and_send_messages(self, existing_order):
-        order_data = existing_order.read()[0]
+    def process_order_and_send_messages(self, existing_order):        
+        order_data = existing_order.read()[0]        
         partner_id = order_data['partner_id'][0]
         partner = self.env['res.partner'].search([('id', '=', partner_id)], limit=1)
         if partner:
             messages = self._build_messages(partner, order_data)
             number = self._trim_phone_number(partner.phone)
             for message in messages:
-                print(message)
-                #self._send_whatsapp(number, message)
+                self.send_whatsapp(number, message)
 
     def _trim_phone_number(self, phone):
         if isinstance(phone, str):
@@ -67,7 +68,7 @@ class PosOrder(models.Model):
 
             if order_amount < 0:
                 transaction_message = (
-                    f"Haz realizado una devolución de productos en Servicat, por lo que hemos restado {points_won} puntos de tu saldo.\n\n"
+                    f"Has realizado una devolución de productos en Servicat, por lo que hemos restado {points_won} puntos de tu saldo.\n\n"
                     
                 )
             else:
@@ -134,7 +135,7 @@ class PosOrder(models.Model):
             return [accumulated_points_message, redeemed_points_message]
         return [accumulated_points_message]
 
-    def _send_whatsapp(self, number, message):
+    def send_whatsapp(self, number, message):
         """
         Envia un mensaje predeterminado de whatsapp al numero del cliente vía API de Mercately
         Las variables de entorno son la URL del webhook y el api-key de la cuenta
@@ -157,7 +158,8 @@ class PosOrder(models.Model):
             }
         )
         try:
-            response = requests.post(mercately_api_url, json=payload, headers=headers, timeout=60)
-            response.raise_for_status()
+            print(payload)
+            #response = requests.post(mercately_api_url, json=payload, headers=headers, timeout=60)
+            #response.raise_for_status()
         except requests.exceptions.RequestException as e:
                 _logger.error("Error al llamar al webhook de whatsapp: %s", e)
