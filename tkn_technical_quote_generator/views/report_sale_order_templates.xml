@@ -1,0 +1,100 @@
+<odoo>
+  <!-- Plantilla del encabezado -->
+  <template id="custom_session_header_footer">
+    <t t-set="docs" t-value="doc"/> <!-- Asume que el objeto se llama 'doc' -->
+    <div class="header">
+        <div class="row" style="font-family: 'Trebuchet MS', sans-serif;">
+            <div class="col-5 mb4">                
+                <p class="font-weight-bold mb-0">Nombre del técnico</p>
+                <p t-field="doc.partner_id.name" />
+            </div>
+            
+        </div>
+
+    </div>
+
+</template>
+
+
+  <!-- Plantilla principal del reporte -->
+  <template id="report_sale_order_document_custom">
+    <t t-call="web.html_container">
+
+      <t t-foreach="docs" t-as="doc">
+        <t t-call="tkn_technical_quote_generator.custom_session_header_footer"/>
+        <!-- <div class="article o_report_layout_standard" t-att-data-oe-model="doc and doc._name" t-att-data-oe-id="doc and doc.id"> -->
+          <div class="page">
+              <!-- Sección de información general de la cotización -->
+              <div class="d-flex justify-content-between">
+                <div class="d-flex flex-column">
+                  <p class="font-weight-bold mb-0">Nombre del técnico</p>
+                  <p t-field="doc.partner_id.name" />
+                </div>
+                <div class="d-flex flex-column">
+                  <p class="font-weight-bold mb-0">Código de referido</p>
+                  <p>No</p>
+                </div>
+                <div class="d-flex flex-column">
+                  <p class="font-weight-bold mb-0">Fecha de cotización</p>
+                  <p t-field="doc.date_order" t-options='{"format": "dd/MM/yyyy"}' />
+                </div>
+              </div>
+  
+              <!-- Tabla de detalle de productos -->
+              <p class="font-weight-bold">Detalle de la cotización</p>
+              <table class="table table-sm">
+                <thead>
+                  <tr class="text-muted" style="background-color: #dddd">
+                    <th>PRODUCTO</th>
+                    <th>PRECIO</th>
+                    <th>CANT</th>
+                    <th>SUBTOTAL</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <t t-foreach="doc.order_line" t-as="line">
+                    <tr>
+                      <td>
+                        <span class="font-weight-bold" t-field="line.product_id.name" />
+                      </td>
+                      <td>
+                        <span t-field="line.price_unit" />
+                      </td>
+                      <td>
+                        <span t-field="line.product_uom_qty" />
+                      </td>
+                      <td>
+                        <span t-field="line.price_subtotal" />
+                      </td>
+                    </tr>
+                  </t>
+                </tbody>
+              </table>
+  
+              <!-- Subtotales y total -->
+              <div class="float-right w-25">
+                <div class="d-flex justify-content-between align-items-center p-2">
+                  <p class="font-weight-bold m-0">SUBTOTAL</p>
+                  <p>$ <span t-esc="doc.amount_total" t-options='{"widget": "float", "precision": 2}' /></p>
+                </div>
+                <div class="d-flex justify-content-between align-items-center p-2">
+                  <p class="font-weight-bold m-0">DESCUENTO</p>
+                  <p>-</p>
+                </div>
+                <div
+                  class="d-flex justify-content-between align-items-center font-weight-bold bg-light p-2">
+                  <p class="m-0">TOTAL</p>
+                  <span t-field="doc.amount_total" />
+                </div>
+              </div>
+          </div>
+        <!-- </div> -->
+
+        <!-- <t t-call="web.external_layout"> -->
+        <!-- Llama a la plantilla de encabezado -->
+   
+        <!-- </t> -->
+      </t>
+    </t>
+  </template>
+</odoo>
