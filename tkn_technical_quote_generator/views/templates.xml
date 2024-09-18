@@ -2,7 +2,9 @@
   <data>
     <template id="extend_short_cart_summary" inherit_id="website_sale.short_cart_summary" name="Extend Short Cart Summary">
       <xpath expr="//div[not(@class)]" position="inside">
-        <a role="button" class="text-secondary" style="cursor: pointer; text-decoration: underline" data-toggle="modal" data-target="#quoteModal">
+        <link rel="stylesheet" href="/tkn_technical_quote_generator/static/src/css/index.css" />
+
+        <a role="button" class="text-secondary download-btn" style="text-decoration: underline" data-toggle="modal" data-target="#quoteModal">
           Descargar Cotización
         </a>
 
@@ -57,21 +59,7 @@
           </form>
         </div>
 
-        <style>
-          #retail-price + label::after, #retail-price + label::before,
-          #differentiated-price-for-being-technician + label::after, #differentiated-price-for-being-technician + label::before,
-          #price-for-referred-customer + label::after, #price-for-referred-customer + label::before {
-            top: 1.25rem;
-          }
-        </style>
-
-        <script>
-          document.getElementById('quote_form').addEventListener('submit', function(event) {
-              setTimeout(function() {
-                $('#quoteModal').modal('hide');
-              }, 500); 
-          });
-        </script>
+        <script type="text/javascript" src="/tkn_technical_quote_generator/static/src/js/index.js"></script>
 
       </xpath>
     </template>

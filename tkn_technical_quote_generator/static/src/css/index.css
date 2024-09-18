@@ -1,0 +1,38 @@
+/* Custom styles for pdf report */
+
+.box-container {
+  display: flex !important;
+  justify-content: space-between !important;
+  border-bottom: 1px solid #ddd !important;
+  margin-bottom: 2rem !important;
+}
+
+.box {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.detail-price {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+/* Custom styles for btn report */
+
+.download-btn {
+  cursor: pointer;
+  margin-top: 6px;
+  display: inline-block;
+}
+
+/* Custom styles for modal */
+
+#retail-price+label::after,
+#retail-price+label::before,
+#differentiated-price-for-being-technician+label::after,
+#differentiated-price-for-being-technician+label::before,
+#price-for-referred-customer+label::after,
+#price-for-referred-customer+label::before {
+  top: 1.25rem;
+}

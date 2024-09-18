@@ -25,3 +25,8 @@ class LoyaltyProgram(models.Model):
                 'expiration_period_months': self.expiration_period_months,
             })
         return expiration
+
+class ResPartner(models.Model):
+    _inherit = 'res.partner'
+
+    points = fields.Integer()

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "tkn_technical_quote_generator",
+    'name': "eCommerce PDF Quotation with Differentiated Pricing",
 
     'summary': """
         Generation of PDF Quotation in Ecommerce with differentiated prices for public, technical and referred customers.""",
@@ -34,4 +34,11 @@
     ],
 
     'demo': [],
+
+    'assets': {
+      'website.assets': [
+        'tkn_technical_quote_generator/static/src/css/index.css',
+        'tkn_technical_quote_generator/static/src/js/index.js',
+      ]
+    }
 }

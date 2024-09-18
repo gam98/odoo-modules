@@ -33,4 +33,9 @@
     'demo': [
         'demo/demo.xml',
     ],
+     'assets': {
+       'point_of_sale.assets': [
+         'tkn-loyalty-points-expiration/static/src/js/CustomLoyalty.js',
+       ]
+    }
 }
