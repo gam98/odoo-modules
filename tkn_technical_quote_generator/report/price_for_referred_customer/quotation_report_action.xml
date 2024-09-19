@@ -1,0 +1,11 @@
+<odoo>
+  <record id="action_report_price_for_referred_customer" model="ir.actions.report">
+    <field name="name">Cotización para un cliente referido</field>
+    <field name="model">sale.order</field>
+    <field name="report_type">qweb-pdf</field>
+    <field name="report_name">tkn_technical_quote_generator.report_price_for_referred_customer</field>
+    <field name="report_file">tkn_technical_quote_generator.report_price_for_referred_customer</field>
+    <field name="binding_model_id" ref="sale.model_sale_order"/>
+    <field name="binding_type">report</field>
+  </record>
+</odoo>

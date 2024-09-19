@@ -1,0 +1,68 @@
+<odoo>
+  <data>
+    <template id="extend_short_cart_summary" inherit_id="website_sale.short_cart_summary" name="Extend Short Cart Summary">
+      <xpath expr="//div[not(@class)]" position="inside">
+        <link rel="stylesheet" href="/tkn_technical_quote_generator/static/src/css/index.css" />
+
+        <a role="button" class="text-secondary download-btn" style="text-decoration: underline" data-toggle="modal" data-target="#quoteModal">
+          Descargar Cotización
+        </a>
+
+        <div id="quoteModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="quoteModal" aria-hidden="true">
+          <form id="quote_form" action="/quote/download_pdf" method="post">
+          <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content p-4">
+                <div class="modal-body">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">✕</span>
+                  </button>
+                  <h4>Descargar cotización</h4>
+                  <p>Selecciona el tipo de cotización que mejor se adapte a tus necesidades.</p>
+  
+                  <div class="custom-control custom-radio d-flex flex-column justify-content-center mb-4">
+                    <input class="custom-control-input" type="radio" value="retail_price" name="quote_type" id="retail-price"/>
+                    <label class="custom-control-label" for="retail-price">
+                      <div class="d-flex flex-column ml-2">
+                        <p class="font-weight-bold mb-0">Precio venta al público</p>
+                        <p class="font-weight-normal mb-0">La cotización se generará con el precio regular del producto.</p>
+                      </div>
+                    </label>
+                  </div>
+  
+                  <div class="custom-control custom-radio d-flex flex-column justify-content-center mb-4">
+                    <input class="custom-control-input" type="radio" value="differentiated_price_for_being_technician" name="quote_type" id="differentiated-price-for-being-technician"/>
+                    <label class="custom-control-label" for="differentiated-price-for-being-technician">
+                      <div class="d-flex flex-column ml-2">
+                        <p class="font-weight-bold mb-0">Precio diferenciado por ser técnico</p>
+                        <p class="font-weight-normal mb-0">Se aplicará un código de descuento para tu referido. Una vez que tu cliente lo utilice, acumularás puntos por su compra.</p>
+                      </div>
+                    </label>
+                  </div>
+  
+                  <div class="custom-control custom-radio d-flex flex-column justify-content-center mb-4">
+                    <input class="custom-control-input" type="radio" value="price_for_referred_customer" id="price-for-referred-customer" name="quote_type"/>
+                    <label class="custom-control-label" for="price-for-referred-customer">
+                      <div class="d-flex flex-column ml-2">
+                        <p class="font-weight-bold mb-0">Precio para un cliente referido</p>
+                        <p class="font-weight-normal mb-0">Se generará un código de descuento para tu referido. Una vez que tu cliente lo utilice, acumularás puntos por su compra.</p>
+                      </div>
+                    </label>
+                  </div>
+                  
+                  <div class="float-right">
+                    <button type="submit" class="btn btn-primary rounded-0 font-weight-bold" >Descargar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <script type="text/javascript" src="/tkn_technical_quote_generator/static/src/js/index.js"></script>
+
+      </xpath>
+    </template>
+
+  </data>
+</odoo>
