@@ -14,8 +14,14 @@
     'depends': [
         'base',
         'point_of_sale',
+        'tkn-redeemable-products-in-pos',
     ],
     'data': [],
+     'assets': {
+        'point_of_sale.assets': [
+            'tkn-whatsapp-notification/static/src/js/send_whatsapp.js',  # Ruta a tu archivo JS
+        ],
+    },
     'application': True,
     'installable': True,
     'license': 'LGPL-3',
