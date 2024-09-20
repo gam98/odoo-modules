@@ -11,30 +11,41 @@ odoo.define('tkn_redeemable_products_in_pos.CustomOrderline', function (require)
       get pointsToWin() {
         let linePoints = 0;
 
-        this.props.line.pos.loyalty.rules.forEach(rule => {
-          let rulePoints = 0
+        if (this.props.line.pos.hasOwnProperty('loyalty')) {
+          this.props.line.pos.loyalty.rules.forEach(rule => {
+            let rulePoints = 0
 
-          const productExist = rule.valid_product_ids.find(product_id => product_id === this.props.line.product.id);
+            const productExist = rule.valid_product_ids.find(product_id => product_id === this.props.line.product.id);
 
-          if (productExist) {
-            rulePoints += rule.points_currency * this.props.line.get_price_with_tax();
+            if (productExist) {
+              rulePoints += rule.points_currency * this.props.line.get_price_with_tax();
+            }
+
+            if (Math.abs(rulePoints) > Math.abs(linePoints)) {
+              linePoints = rulePoints;
+            }
+          })
+
+          if (linePoints < 0) {
+            return Math.ceil(linePoints);
+          } else {
+            return Math.floor(linePoints);
           }
 
-          if (Math.abs(rulePoints) > Math.abs(linePoints)) {
-            linePoints = rulePoints;
-          }
-        })
-
-        if(linePoints < 0) {
-          return Math.ceil(linePoints);
-        } else {
-          return Math.floor(linePoints);
         }
+
+        return linePoints;
 
       }
 
       get pointsToSpentInPromotionalReward() {
-        const linePoints = this.props.line.pos.loyalty.rewards.find(reward => reward.id === this.props.line.reward_id);
+        let linePoints = 0;
+
+        if (this.props.line.pos.hasOwnProperty('loyalty')) {
+          linePoints = this.props.line.pos.loyalty.rewards.find(reward => reward.id === this.props.line.reward_id);
+
+          return linePoints;
+        }
 
         return linePoints;
       }
