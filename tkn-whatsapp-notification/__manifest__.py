@@ -15,6 +15,7 @@
         'base',
         'point_of_sale',
         'tkn-redeemable-products-in-pos',
+        'tkn-referred-programs',
     ],
     'data': [],
      'assets': {
