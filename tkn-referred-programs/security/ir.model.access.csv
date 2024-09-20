@@ -1,2 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_tkn-referred-programs_tkn-referred-programs,tkn-referred-programs.tkn-referred-programs,model_tkn-referred-programs_tkn-referred-programs,base.group_user,1,1,1,1

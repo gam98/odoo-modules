@@ -20,7 +20,7 @@
     'data': [],
      'assets': {
         'point_of_sale.assets': [
-            'tkn-whatsapp-notification/static/src/js/send_whatsapp.js',  # Ruta a tu archivo JS
+            'tkn-whatsapp-notification/static/src/js/send_whatsapp.js',
         ],
     },
     'application': True,
