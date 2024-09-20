@@ -10,21 +10,21 @@ odoo.define('tkn-whatsapp-notification', function (require) {
 
     send_whatsapp: function(){
         const client = this.get_client();
-            if (!client) {
+        if (!client) {
                 console.log("No hay cliente asociado a la orden.");
                 return;
             }
-
+            
             const client_name = client.name;
             const client_phone = client.mobile || client.phone;
-
+            
             const points_won = this.get_won_points(); 
             const points_spent = this.get_spent_points(); 
             const order_amount = this.get_total_with_tax(); ;
-
+            
             const points_before = client.loyalty_points; 
             const points_after = points_before + points_won - points_spent; 
-
+            
             const messageData = {
                 client_name,
                 client_phone,
@@ -34,12 +34,39 @@ odoo.define('tkn-whatsapp-notification', function (require) {
                 points_before,
                 points_after,
             };
+            
+            const bookedCoupons = this.bookedCouponCodes;
+            const couponKey = Object.keys(bookedCoupons)[0];
 
-            const messages = this.buildMessages(messageData);
-            messages.forEach(message => {
-                this.callMercatelyAPI(client_phone, message);
-            });     
-    },
+            if (couponKey) {
+                console.log('couponKey',couponKey)
+                const programId = bookedCoupons[couponKey].program_id;
+                if (programId){
+                    rpc.query({
+                        model: 'pos.order',
+                        method: 'get_coupons_program_owner',
+                        args: [this,programId]
+                    }).then((partner) => {
+                        const partnerCouponOwnerName = partner[0].name
+                        const partnerCouponOwnerLoyaltyPoints = partner[0].loyalty_points
+                        const partnerCouponOwnerNamePhone = partner[0].phone    
+                        const partnerCouponOwnerMessage = `¡Hola ${partnerCouponOwnerName}!👋
+                            Has acumulado ${points_won} puntos porque tu referido ${client_name} usó tu cupón.
+                            Ahora, tu saldo total de puntos es de ${partnerCouponOwnerLoyaltyPoints}.
+                            Recuerda que puedes canjear tus puntos en cualquier momento. 
+                            Para más información sobre cómo redimir tus puntos, por favor visita este enlace: https://www.repuestoslineablanca.com
+                            ¡Esperamos verte pronto! Que tengas un gran día.`;
+    
+                        this.callMercatelyAPI(partnerCouponOwnerNamePhone, partnerCouponOwnerMessage);
+                    })
+                }
+            } else {
+                const messages = this.buildMessages(messageData);
+                messages.forEach(message => {
+                    this.callMercatelyAPI(client_phone, message);
+                });
+            }
+        },
 
     trimPhoneNumber: function (phone) {
         if (typeof phone === 'string') {
@@ -88,7 +115,7 @@ odoo.define('tkn-whatsapp-notification', function (require) {
 
     init: function(attributes) {
         this._super(attributes);
-        this.messageSent = false; // Variable para rastrear si el mensaje ya fue enviado
+        this.messageSent = false;
     },
 
     export_for_printing: function(){

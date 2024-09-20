@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, api, fields
+from odoo import models, api, fields, http
+import requests
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -29,24 +30,9 @@ class PosOrder(models.Model):
             points_added = self._add_or_substract_points_to_program_owner(partner_id, loyalty_points,'add')
 
             if points_added[0]:
-                original_partner = self.env['res.partner'].search([('id', '=', original_partner_id)], limit=1)
                 self._add_or_substract_points_to_program_owner(original_partner_id, loyalty_points,'substract')
-                partner = self.env['res.partner'].search([('id', '=', partner_id)], limit=1)
-                number = partner.phone
-                message = (
-                    f"¡Hola {partner['name']}!👋\n\n"
-                    f"Has acumulado {loyalty_points} puntos porque tu referido {original_partner['name']} usó tu cupón."
-                    f"Ahora, tu saldo total de puntos es de {points_added[1]}.\n\n"
-                    "Recuerda que puedes canjear tus puntos en cualquier momento. "
-                    "Para más información sobre cómo redimir tus puntos, por favor visita este enlace: https://www.repuestoslineablanca.com\n\n"
-                    "¡Esperamos verte pronto! Que tengas un gran día."
-                )
-                self.env['pos.order'].send_whatsapp(number, message)
-                self.write({'notification_sent': True})
 
         return pos_order_id
-
-    
     
     def _add_or_substract_points_to_program_owner(self,partner_id,loyalty_points,operation):
         partner = self.env['res.partner'].search([('id', '=', partner_id)], limit=1)
@@ -65,4 +51,11 @@ class PosOrder(models.Model):
              _logger.error('Error al actualizar puntos')
              return [False, new_loyalty_points]
         
+    def get_coupons_program_owner(self, program_id):
+        coupon_program = self.env['coupon.program'].browse(program_id)
+        coupon_program_data = coupon_program.read()[0]
+
+        partner_id = coupon_program_data['assigned_customer'][0]
+        partner = self.env['res.partner'].search([('id', '=', partner_id)], limit=1)
+        return partner.read()
     
