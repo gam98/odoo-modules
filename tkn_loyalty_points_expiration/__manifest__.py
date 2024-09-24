@@ -26,4 +26,10 @@
 
     'demo': [],
 
+    'assets': {
+      'point_of_sale.assets': [
+        'tkn_loyalty_points_expiration/static/src/js/getLoyaltyPoints.js',
+      ],
+    },
+
 }

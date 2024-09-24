@@ -21,7 +21,7 @@
                   <p>Selecciona el tipo de cotización que mejor se adapte a tus necesidades.</p>
   
                   <div class="custom-control custom-radio d-flex flex-column justify-content-center mb-4">
-                    <input class="custom-control-input" type="radio" value="retail_price" name="quote_type" id="retail-price"/>
+                    <input class="custom-control-input" type="radio" value="retail_price" name="quote_type" id="retail-price" checked="checked"/>
                     <label class="custom-control-label" for="retail-price">
                       <div class="d-flex flex-column ml-2">
                         <p class="font-weight-bold mb-0">Precio venta al público</p>
@@ -35,7 +35,7 @@
                     <label class="custom-control-label" for="differentiated-price-for-being-technician">
                       <div class="d-flex flex-column ml-2">
                         <p class="font-weight-bold mb-0">Precio diferenciado por ser técnico</p>
-                        <p class="font-weight-normal mb-0">Se aplicará un código de descuento para tu referido. Una vez que tu cliente lo utilice, acumularás puntos por su compra.</p>
+                        <p class="font-weight-normal mb-0">Se aplicará el descuento de Servicat destinado a los técnicos.</p>
                       </div>
                     </label>
                   </div>

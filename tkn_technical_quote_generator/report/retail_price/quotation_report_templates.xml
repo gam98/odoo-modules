@@ -11,6 +11,10 @@
                 <p t-field="doc.partner_id.name" />
               </div>
               <div class="box">
+                <p class="font-weight-bold mb-0">Número de Identificación</p>
+                <p t-field="doc.partner_id.vat" />
+              </div>
+              <div class="box">
                 <p class="font-weight-bold mb-0">Código de referido</p>
                 <p>No</p>
               </div>
@@ -23,7 +27,7 @@
             <p class="font-weight-bold">Detalle de la cotización</p>
             <table class="table table-sm border-bottom mb-4">
               <thead>
-                <tr class="text-muted" style="background-color: #dddd">
+                <tr class="text-muted">
                   <th>PRODUCTO</th>
                   <th>PRECIO</th>
                   <th>CANT</th>
@@ -38,13 +42,13 @@
                         <span class="font-weight-bold" t-field="line.product_id.name" />
                       </td>
                       <td>
-                        <span t-field="line.price_reduce_taxinc" />
+                        <p class="m-0">$ <span t-esc="line.price_unit + ( line.price_unit * (sum(tax.amount for tax in line.tax_id) / 100))" t-options='{"widget": "float", "precision": 2}' /></p>
                       </td>
                       <td>
                         <span t-field="line.product_uom_qty" />
                       </td>
                       <td>
-                        <span t-field="line.price_total" />
+                        <p class="m-0">$ <span t-esc="(line.price_unit + ( line.price_unit * (sum(tax.amount for tax in line.tax_id) / 100))) * line.product_uom_qty" t-options='{"widget": "float", "precision": 2}' /></p>
                       </td>
                     </tr>
                   </t>                  
@@ -55,7 +59,7 @@
             <div class="float-right w-25">
               <div class="detail-price p-2">
                 <p class="font-weight-bold m-0">SUBTOTAL</p>
-                <p class="m-0">$<span t-esc="sum(line.price_total for line in doc.order_line if not line.is_reward_line)" t-options='{"widget": "float", "precision": 2}'/></p>  
+                <p class="m-0">$<span t-esc="sum((line.price_unit + ( line.price_unit * (sum(tax.amount for tax in line.tax_id) / 100))) * line.product_uom_qty for line in doc.order_line if not line.is_reward_line)" t-options='{"widget": "float", "precision": 2}'/></p>  
               </div>
               <div class="detail-price p-2">
                 <p class="font-weight-bold m-0">DESCUENTO</p>
@@ -63,7 +67,7 @@
               </div>
               <div class="detail-price font-weight-bold bg-light p-2">
                 <p class="m-0">TOTAL</p>
-                <p class="m-0">$<span t-esc="sum(line.price_total for line in doc.order_line if not line.is_reward_line)" t-options='{"widget": "float", "precision": 2}'/></p>                
+                <p class="m-0">$<span t-esc="sum((line.price_unit + ( line.price_unit * (sum(tax.amount for tax in line.tax_id) / 100))) * line.product_uom_qty for line in doc.order_line if not line.is_reward_line)" t-options='{"widget": "float", "precision": 2}'/></p>                
               </div>
             </div>
           </t>
