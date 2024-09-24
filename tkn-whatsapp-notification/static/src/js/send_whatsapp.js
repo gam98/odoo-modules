@@ -50,12 +50,7 @@ odoo.define('tkn-whatsapp-notification', function (require) {
                         const partnerCouponOwnerName = partner[0].name
                         const partnerCouponOwnerLoyaltyPoints = partner[0].loyalty_points
                         const partnerCouponOwnerNamePhone = partner[0].phone    
-                        const partnerCouponOwnerMessage = `¡Hola ${partnerCouponOwnerName}!👋
-                        Has acumulado ${points_won} puntos porque tu referido ${client_name} usó tu cupón.
-                        Ahora, tu saldo total de puntos es de ${partnerCouponOwnerLoyaltyPoints}.
-                        Recuerda que puedes canjear tus puntos en cualquier momento.
-                        Para más información sobre cómo redimir tus puntos, por favor visita este enlace: https://www.repuestoslineablanca.com
-                        ¡Esperamos verte pronto! Que tengas un gran día.`;
+                        const partnerCouponOwnerMessage = `¡Hola ${partnerCouponOwnerName}!👋\n\nHas acumulado ${points_won} puntos porque tu referido ${client_name} usó tu cupón.\n\nAhora, tu saldo total de puntos es de ${partnerCouponOwnerLoyaltyPoints}.\n\nRecuerda que puedes canjear tus puntos en cualquier momento.\n\nPara más información sobre cómo redimir tus puntos, por favor visita este enlace: https://www.repuestoslineablanca.com\n\n¡Esperamos verte pronto! Que tengas un gran día.`;
     
                         this.callMercatelyAPI(partnerCouponOwnerNamePhone, partnerCouponOwnerMessage);
                     })
