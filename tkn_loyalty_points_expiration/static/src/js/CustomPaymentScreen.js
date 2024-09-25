@@ -6,44 +6,40 @@ odoo.define('tkn_loyalty_points_expiration.PaymentScreen', function (require) {
   const rpc = require('web.rpc');
 
   const CustomPaymentScreen = PaymentScreen =>
-      class extends PaymentScreen {
-          async validateOrder(isForceValidate) {
-              await super.validateOrder(isForceValidate);
+    class extends PaymentScreen {
+      async validateOrder(isForceValidate) {
+        await super.validateOrder(isForceValidate);
 
-              if (this.currentOrder.is_paid()) {
-                  // Recuperamos los datos necesarios de la orden
-                  const currentOrder = this.env.pos.get_order();
-                  console.log('currentOrder -> ', currentOrder)
-                  const partnerId = currentOrder.get_client()?.id;
-                  const wonPoints = currentOrder.get_won_points();
-                  const spentPoints = currentOrder.get_spent_points();
-                  console.log('partnerId -> ', partnerId)
+        if (this.currentOrder.is_paid()) {
 
-                  if (partnerId && wonPoints !== undefined && spentPoints !== undefined) {
-                      // Realizamos una llamada RPC para crear el registro de loyalty.points
-                      try {
-                          const result = await rpc.query({
-                              model: 'loyalty.points',
-                              method: 'create',
-                              args: [{
-                                  partner_id: partnerId,
-                                  won_points: wonPoints,
-                                  aux_points: wonPoints,
-                                  spent_points: spentPoints,
-                              }],
-                          });
+          const { name } = this.currentOrder
+          const currentOrder = this.env.pos.get_order();
+          const partnerId = currentOrder.get_client()?.id;
+          const wonPoints = currentOrder.get_won_points();
+          const spentPoints = currentOrder.get_spent_points();
 
-                          console.log('result -> ', result)
+          if (partnerId && wonPoints !== undefined && spentPoints !== undefined) {
+            try {
+              await rpc.query({
+                model: 'loyalty.points',
+                method: 'create',
+                args: [{
+                  partner_id: partnerId,
+                  won_points: wonPoints,
+                  aux_points: wonPoints,
+                  spent_points: spentPoints,
+                  order_name: name
+                }],
+              });
 
-                          console.log('Puntos de lealtad guardados exitosamente');
-                      } catch (error) {
-                          console.error('Error al guardar los puntos de lealtad:', error);
-                      }
-                  }
-              }
-
+            } catch (error) {
+              console.error('Error al guardar los puntos de lealtad:', error);
+            }
           }
-      };
+        } 
+
+      }
+    };
 
   Registries.Component.extend(PaymentScreen, CustomPaymentScreen);
 

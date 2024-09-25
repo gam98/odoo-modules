@@ -15,6 +15,7 @@ class LoyaltyPoints(models.Model):
         ('active', 'Activo'),
         ('expired', 'Expirado'),
     ], string="Estado", default='active')
+    order_name = fields.Char(string="Orden", required=True)
 
     @api.model
     def create(self, vals):
@@ -85,10 +86,10 @@ class LoyaltyPoints(models.Model):
         expired_points.write({'state': 'expired'})
 
         # Notificar a los clientes sobre la expiración de sus puntos
-        # for point in expired_points:
-        #     point.partner_id.message_post(
-        #         body=f"Se han expirado {point.won_points} puntos de lealtad el {today}."
-        #     )
+        for point in expired_points:
+            point.partner_id.message_post(
+                body=f"Se han expirado {point.aux_points} puntos de lealtad el {today}."
+            )
 
 
 class ResPartner(models.Model):
