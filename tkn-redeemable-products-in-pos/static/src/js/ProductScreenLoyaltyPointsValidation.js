@@ -47,6 +47,7 @@ odoo.define('tkn_redeemable_products_in_pos.ProductScreenLoyaltyPointsValidation
       };
 
       order.orderlines.models.forEach(line => {
+
         if (line.reward_id) {
           const isGiftCard = line.product.lst_price === 0 && line.is_gift_card;
           if (isGiftCard) {
@@ -54,12 +55,21 @@ odoo.define('tkn_redeemable_products_in_pos.ProductScreenLoyaltyPointsValidation
             purchaseSummary['giftCardSpending'] += discount;
           } else {
             purchaseSummary['rewardSpending'] += this.priceWithTaxes(line) * line.quantity;
+            console.log('price -> ', Number(this.priceWithTaxes(line)))
+            line.price = Number(this.priceWithTaxes(line));
+            line.discount = 100;
+            line.discountStr = '100';
           }
         } else if (line.hasOwnProperty('refunded_orderline_id') && line['refunded_orderline_id'] !== undefined) {
           purchaseSummary['refundSpending'] += line.get_price_with_tax();
         } else {
           purchaseSummary['regularSpending'] += line.get_price_with_tax();
         }
+
+
+        console.log('********* ProductScreenLoyaltyPointsValidation *********')
+        console.log({ line })
+        console.log('********* ProductScreenLoyaltyPointsValidation *********')
       });
 
       const MINIMUM_REQUIRED_EXPENSE = 1;

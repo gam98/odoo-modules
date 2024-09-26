@@ -1,27 +1,32 @@
 from odoo import models, fields, api
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 class LoyaltyPoints(models.Model):
     _name = 'loyalty.points'
     _description = 'Loyalty Points with Expiration'
 
-    partner_id = fields.Many2one('res.partner', string="Cliente", required=True)
-    won_points = fields.Integer(string="Puntos ganados", required=True)
-    aux_points = fields.Integer(string="Puntos Auxiliares", required=True, default=0)
-    spent_points = fields.Integer(string="Puntos gastados", required=True, default=0)
-    accumulation_date = fields.Date(string="Fecha de acumulación", default=fields.Date.today, required=True)
-    expiration_date = fields.Date(string="Fecha de expiración", required=True)
+    partner_id = fields.Many2one('res.partner', required=True)
+    won_points = fields.Integer(required=True)
+    aux_points = fields.Integer(required=True, default=0)
+    spent_points = fields.Integer(required=True, default=0)
+    accumulation_date = fields.Date(default=fields.Date.today, required=True)
+    expiration_date = fields.Date(required=True)
     state = fields.Selection([
         ('active', 'Activo'),
         ('expired', 'Expirado'),
-    ], string="Estado", default='active')
-    order_name = fields.Char(string="Orden", required=True)
+    ], default='active')
+    order_name = fields.Char(required=True)
 
     @api.model
     def create(self, vals):
-        if 'expiration_date' not in vals:
-            EXPIRATION_PERIOD_MONTHS = 6
-            vals['expiration_date'] = fields.Date.today() + timedelta(days=30 * EXPIRATION_PERIOD_MONTHS)
+        expiration_days = self.env['ir.config_parameter'].sudo().get_param('EXPIRATION_PERIOD_DAYS')
+
+        if expiration_days:
+            expiration_days = int(expiration_days)
+            vals['expiration_date'] = fields.Date.today() + timedelta(days=expiration_days)        
+        elif 'expiration_date' not in vals:
+            EXPIRATION_PERIOD_DAYS = 180
+            vals['expiration_date'] = fields.Date.today() + timedelta(days=EXPIRATION_PERIOD_DAYS)
         
         record = super(LoyaltyPoints, self).create(vals)
 
