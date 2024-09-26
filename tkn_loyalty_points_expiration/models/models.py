@@ -30,33 +30,22 @@ class LoyaltyPoints(models.Model):
         
         record = super(LoyaltyPoints, self).create(vals)
 
-        # Si se especifican puntos gastados en la creación
         if 'spent_points' in vals and vals['spent_points'] > 0:
-            print('++++++++++++++++++++++')
-            print('Puntos gastados: ', vals['spent_points'])
-            print('++++++++++++++++++++++')
-            
-            # Llamar directamente a _handle_point_redeem_overflow
             record.update_aux_points(vals['spent_points'], record)
 
         return record
     
     def update_aux_points(self, redeemed_points, record):
-        # Buscar otros registros de puntos activos para el mismo cliente
         records_to_adjust = self.search([
             ('partner_id', '=', record.partner_id.id),
             ('id', '!=', record.id),
             ('state', '=', 'active'),
         ], order='id')
 
-        print('records_to_adjust -> ', records_to_adjust.read())
-
-        # Ajustar los puntos auxiliares de los registros
         for adjust_record in records_to_adjust:
             if redeemed_points <= 0:
                 break
 
-            # Reducir aux_points del siguiente registro si tiene puntos
             if adjust_record.aux_points > 0:
                 if adjust_record.aux_points >= redeemed_points:
                     adjust_record.aux_points -= redeemed_points
@@ -90,7 +79,6 @@ class LoyaltyPoints(models.Model):
         ])
         expired_points.write({'state': 'expired'})
 
-        # Notificar a los clientes sobre la expiración de sus puntos
         for point in expired_points:
             point.partner_id.message_post(
                 body=f"Se han expirado {point.aux_points} puntos de lealtad el {today}."
