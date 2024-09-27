@@ -3,23 +3,15 @@
 from odoo import models, http
 import requests
 
-# traer el partner por su id
-    # traer el telefono
-    # puntos
-    # codigos de referido
-
-# tener un solo metodo que haga todo eso secuencialmente y se ejecute cada dia o cada x tiempo
-    # que compare los puntos o codigos que han cambiado para no actualizar al pedo
-    # que actualice los contactos en mercately en un foreach
-
 class MercatelyIntegration(models.Model):
     _name = 'mercately'
 
-    def get_partner_id_from_mercately_by_phone(self, partner_phone):
+    def get_partner_data_from_mercately_by_phone(self, partner_phone):
 
         mercately_api_key = http.request.env['ir.config_parameter'].sudo().get_param('MERCATELY_API_KEY')
+        mercately_url = http.request.env['ir.config_parameter'].sudo().get_param('MERCATELY_CUSTOMERS_CRUD_URL')
 
-        url = f"https://app.mercately.com/retailers/api/v1/customers/{partner_phone}"
+        url = f"{mercately_url}{partner_phone}"
 
         headers = {"api-key": mercately_api_key, 'User-Agent': 'My User Agent 1.0',}
 
@@ -27,27 +19,20 @@ class MercatelyIntegration(models.Model):
 
         data = response.json()
         if data['message'] == 'Customer found successfully':
-            return data['customer']['id']
+            result = {
+                'id': data['customer']['id'],
+                'points_and_codes': data['customer']['custom_fields']
+            }
+            return result
         else:
             return data['message']
 
-    def update_partner_points_and_referred_codes_in_mercately(self, partner_mercately_id, new_total_points, new_referred_codes_list):
+    def update_partner_points_and_referred_codes_in_mercately(self, partner_mercately_id, payload):
 
-        url = f"https://app.mercately.com/retailers/api/v1/customers/{partner_mercately_id}"
+        mercately_url = http.request.env['ir.config_parameter'].sudo().get_param('MERCATELY_CUSTOMERS_CRUD_URL')
+
+        url = f"{mercately_url}{partner_mercately_id}"
         mercately_api_key = http.request.env['ir.config_parameter'].sudo().get_param('MERCATELY_API_KEY')
-
-        payload = {
-            "custom_fields": [
-                {
-                "field_name": "puntos",
-                "field_content": new_total_points
-                },
-                {
-                "field_name": "codigos",
-                "field_content": new_referred_codes_list
-                }
-            ]
-        }
 
         headers = {
         "Content-Type": "application/json",
@@ -58,7 +43,6 @@ class MercatelyIntegration(models.Model):
         try:
             response = requests.put(url, json=payload, headers=headers)
             data = response.json()
-            print(data)
         except:
             print('REQUEST FAILED')
 
@@ -66,17 +50,61 @@ class MercatelyIntegration(models.Model):
         partner = self.env['res.partner'].browse(partner_id)
         if partner.exists():
             partner_phone = partner.read()[0]['phone_sanitized']
-            partner_loyalty_points = 300 #partner.read()[0]['loyalty_points']
-            # aca buscar los cupones de referido activos
-            partner_coupons = 'cupon111'
+            partner_loyalty_points = partner.read()[0]['loyalty_points']
+            partner_coupons = self._get_coupon_programs_from_partner_id(partner_id)
+    
             return {'partner_phone':partner_phone,'partner_loyalty_points': partner_loyalty_points, 'partner_coupons': partner_coupons}
         else:
             return False
     
     def update_mercately_partner_info(self, partner_id):
+
         partner_data = self.get_partner_data_by_id(partner_id)
         if partner_data:
-            mercately_partner_id = self.get_partner_id_from_mercately_by_phone(partner_data['partner_phone'])
-            self.update_partner_points_and_referred_codes_in_mercately(mercately_partner_id,partner_data['partner_loyalty_points'],partner_data['partner_coupons'])
+            mercately_partner_data = self.get_partner_data_from_mercately_by_phone(partner_data['partner_phone'])
+            
+            mercately_partner_id = mercately_partner_data['id']
+
+            mercately_codes = next((item['field_content:'] for item in mercately_partner_data['points_and_codes'] if item['field_name'] == 'codigos'), None)
+            mercately_points = next((item['field_content:'] for item in mercately_partner_data['points_and_codes'] if item['field_name'] == 'puntos'), None)
+            
+            odoo_codes = partner_data['partner_coupons']
+            odoo_points = partner_data['partner_loyalty_points']
+            
+            payload = { "custom_fields": []}
+            should_update_customer = False
+
+            if mercately_codes != odoo_codes:
+                payload["custom_fields"].append({
+                "field_name": "codigos",
+                "field_content": odoo_codes
+                })
+                should_update_customer = True
+            
+
+            if mercately_points != str(odoo_points):
+                payload["custom_fields"].append({
+                "field_name": "puntos",
+                "field_content": odoo_points
+                })
+                should_update_customer = True
+            
+            if should_update_customer:
+                self.update_partner_points_and_referred_codes_in_mercately(mercately_partner_id,payload)
         else:
-            print('Error al actualizar los datos en mercately del cliente con id: ', partner_id)
+            print('El cliente con id: ', partner_id, ' de mercately no existe en el sistema Odoo')
+
+    def _get_coupon_programs_from_partner_id(self, partner_id):
+        coupon_programs = self.env['coupon.program'].search([
+        ('program_type', '=', 'coupon_program'),
+        ('active', '=', True),
+        ('assigned_customer', '=', partner_id),
+        ('coupon_type', '=', 'referred')
+        ])
+
+        coupon_ids = coupon_programs.read()[0]['coupon_ids']
+        coupons = self.env['coupon.coupon'].search([('id', 'in', coupon_ids), ('state', '=', 'new')])
+        coupon_data = coupons.read(['code'])
+        coupon_codes = "\n".join([coupon['code'] for coupon in coupon_data])
+
+        return coupon_codes
