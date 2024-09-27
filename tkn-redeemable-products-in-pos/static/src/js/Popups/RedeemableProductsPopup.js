@@ -18,7 +18,10 @@ odoo.define('tkn_redeemable_products_in_pos.redeemableProductsPopup', function (
     }
 
     _onProductSelected(event) {
-      this.state.selectedProduct = event.product;
+      console.log('********* RedeemableProductsPopup *********')
+      console.log('pruduct selected', event.product);
+      console.log('********* RedeemableProductsPopup *********')
+      this.state.selectedProduct = event.product;      
       this.updatePointsNeeded();
       this.render();
     }
