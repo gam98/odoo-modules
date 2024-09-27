@@ -7,6 +7,20 @@ class MercatelyIntegration(models.Model):
     _name = 'mercately'
 
     def get_partner_data_from_mercately_by_phone(self, partner_phone):
+        """
+        Retrieve partner data from Mercately by their phone number.
+
+        This method uses the Mercately API to fetch customer information based on the
+        provided phone number. It returns the customer's ID and custom fields (points and codes),
+        or an error message if the customer is not found.
+
+        Args:
+            partner_phone (str): Phone number of the partner to look up.
+
+        Returns:
+            dict: Customer's ID and custom fields (points and codes) if found.
+            str: Error message if customer is not found.
+        """
 
         mercately_api_key = http.request.env['ir.config_parameter'].sudo().get_param('MERCATELY_API_KEY')
         mercately_url = http.request.env['ir.config_parameter'].sudo().get_param('MERCATELY_CUSTOMERS_CRUD_URL')
@@ -28,7 +42,19 @@ class MercatelyIntegration(models.Model):
             return data['message']
 
     def update_partner_points_and_referred_codes_in_mercately(self, partner_mercately_id, payload):
+        """
+        Update a partner's points and referred codes in Mercately.
 
+        This method updates custom fields (such as loyalty points and referred codes) in Mercately
+        for the given partner using a PUT request.
+
+        Args:
+            partner_mercately_id (str): Mercately ID of the partner to update.
+            payload (dict): Data to update in Mercately, typically containing custom fields.
+
+        Returns:
+            None
+        """
         mercately_url = http.request.env['ir.config_parameter'].sudo().get_param('MERCATELY_CUSTOMERS_CRUD_URL')
 
         url = f"{mercately_url}{partner_mercately_id}"
@@ -47,6 +73,18 @@ class MercatelyIntegration(models.Model):
             print('REQUEST FAILED')
 
     def get_partner_data_by_id(self, partner_id):
+        """
+        Retrieve partner data from Odoo based on their partner ID.
+
+        This method fetches a partner's sanitized phone number, loyalty points, and coupons.
+
+        Args:
+            partner_id (int): Odoo partner ID.
+
+        Returns:
+            dict: Dictionary containing partner's phone, loyalty points, and coupons.
+            bool: False if the partner doesn't exist.
+        """
         partner = self.env['res.partner'].browse(partner_id)
         if partner.exists():
             partner_phone = partner.read()[0]['phone_sanitized']
@@ -58,6 +96,18 @@ class MercatelyIntegration(models.Model):
             return False
     
     def update_mercately_partner_info(self, partner_id):
+        """
+        Update a partner's information in Mercately based on their Odoo data.
+
+        This method compares the partner's loyalty points and referred codes between Odoo and Mercately.
+        If discrepancies are found, it updates Mercately with the correct data from Odoo.
+
+        Args:
+            partner_id (int): Odoo partner ID.
+
+        Returns:
+            None
+        """
 
         partner_data = self.get_partner_data_by_id(partner_id)
         if partner_data:
@@ -95,6 +145,17 @@ class MercatelyIntegration(models.Model):
             print('El cliente con id: ', partner_id, ' de mercately no existe en el sistema Odoo')
 
     def _get_coupon_programs_from_partner_id(self, partner_id):
+        """
+        Retrieve active coupon programs for a partner.
+
+        This method fetches referred coupon programs and their corresponding codes for a partner.
+
+        Args:
+            partner_id (int): Odoo partner ID.
+
+        Returns:
+            str: A string of coupon codes separated by newlines.
+        """
         coupon_programs = self.env['coupon.program'].search([
         ('program_type', '=', 'coupon_program'),
         ('active', '=', True),
