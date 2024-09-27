@@ -163,9 +163,11 @@ class MercatelyIntegration(models.Model):
         ('coupon_type', '=', 'referred')
         ])
 
-        coupon_ids = coupon_programs.read()[0]['coupon_ids']
-        coupons = self.env['coupon.coupon'].search([('id', 'in', coupon_ids), ('state', '=', 'new')])
-        coupon_data = coupons.read(['code'])
-        coupon_codes = "\n".join([coupon['code'] for coupon in coupon_data])
+        if coupon_programs.read() != []:
+            coupon_ids = coupon_programs.read()[0]['coupon_ids']
+            coupons = self.env['coupon.coupon'].search([('id', 'in', coupon_ids), ('state', '=', 'new')])
+            coupon_data = coupons.read(['code'])
+            coupon_codes = "\n".join([coupon['code'] for coupon in coupon_data])
 
-        return coupon_codes
+            return coupon_codes
+        return ''

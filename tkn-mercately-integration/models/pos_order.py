@@ -5,3 +5,4 @@
 
 # actualizar puntos cuando se procese una orden
 # actualizar códigos cuando se creen o se use algún código
+# refactorizar el models.py
