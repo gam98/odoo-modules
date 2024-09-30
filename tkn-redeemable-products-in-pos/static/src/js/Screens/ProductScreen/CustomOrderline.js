@@ -8,6 +8,11 @@ odoo.define('tkn_redeemable_products_in_pos.CustomOrderline', function (require)
 
     class CustomOrderline extends Orderline {
 
+      get isTechnical() {
+        const client = this.env.pos.get('client') || this.env.pos.get_client();
+        return client.classification_id[1] === 'TECNICO';
+      }
+
       get pointsToWin() {
         let linePoints = 0;
 

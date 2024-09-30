@@ -55,8 +55,7 @@ odoo.define('tkn_redeemable_products_in_pos.ProductScreenLoyaltyPointsValidation
             purchaseSummary['giftCardSpending'] += discount;
           } else {
             purchaseSummary['rewardSpending'] += this.priceWithTaxes(line) * line.quantity;
-            console.log('price -> ', Number(this.priceWithTaxes(line)))
-            line.price = Number(this.priceWithTaxes(line));
+            line.price = line.product.lst_price;
             line.discount = 100;
             line.discountStr = '100';
           }

@@ -10,6 +10,11 @@ odoo.define('tkn_redeemable_products_in_pos.CustomPointsCounter', function (requ
   const PointsCounterCustom = PointsCounter =>
     class extends PointsCounter {
 
+      get isTechnical() {
+        const client = this.env.pos.get('client') || this.env.pos.get_client();
+        return client.classification_id[1] === 'TECNICO';
+      }
+      
       get_points_total() {
         const spentPoints = super.get_points_spent();
         const totalPoints = this.env.pos.get_client().loyalty_points - spentPoints;
