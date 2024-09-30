@@ -11,13 +11,17 @@
                 <i role="img" aria-label="Info" title="Info" class="product-info-button fa fa-info-circle"
                     t-on-click.stop="onProductInfoClick()"
                 />
+
                 <img t-att-src="imageUrl" t-att-alt="props.product.display_name" />
                 <span class="price-tag">
                     <t t-esc="price" />
                 </span>
             </div>
             <div class="product-name" t-attf-id="article_product_{{props.product.id}}">
-                <t t-esc="props.product.display_name" />
+              <t t-if="props.product.default_code">
+                <span class="product-code">[<t t-esc="props.product.default_code" />]</span>
+              </t>
+              <t t-esc="props.product.display_name" />
             </div>
         </article>
     </t>
