@@ -14,6 +14,7 @@
         'base',
         'point_of_sale',
         'ek_pos_retail_with_sap',
+        'tkn_loyalty_points_expiration'
     ],
     'data': [],
     'application': True,

@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'tkn_loyalty_points_expiration'],
+    'depends': ['base', 'tkn_loyalty_points_expiration', 'tkn-referred-programs' ],
 
     # always loaded
     'data': [
@@ -28,6 +28,11 @@
         'views/views.xml',
         'views/templates.xml',
     ],
+    'assets': {
+        'point_of_sale.assets': [
+            'tkn-mercately-integration/static/src/js/update_mercately_data.js',
+        ],
+    },
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',

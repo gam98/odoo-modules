@@ -35,21 +35,35 @@ class PosOrder(models.Model):
         return pos_order_id
     
     def _add_or_substract_points_to_program_owner(self,partner_id,loyalty_points,operation):
-        partner = self.env['res.partner'].search([('id', '=', partner_id)], limit=1)
-        partner_data = partner.read()
-        current_loyalty_points = partner_data[0]['loyalty_points']
+        loyalty_points_model = self.env['loyalty.points']
+        res_partner_model = self.env['res.partner']
+
+        won_points = 0
+        aux_points = 0
+        spent_points = 0
 
         if operation == 'add':
-            new_loyalty_points = int(current_loyalty_points) + int(loyalty_points)
+            won_points = int(loyalty_points)
+            aux_points = int(loyalty_points)
         if operation == 'substract':
-            new_loyalty_points = int(current_loyalty_points) - int(loyalty_points)
+            aux_points = int(loyalty_points) * -1
+            spent_points = int(loyalty_points)
         try:
-            partner.write({'loyalty_points': new_loyalty_points})
+            args = {
+                  'partner_id': partner_id,
+                  'won_points': won_points,
+                  'aux_points': aux_points,
+                  'spent_points': spent_points,
+                  'order_name': 'Orden de referido' 
+                }
+            
+            loyalty_points_model.create(args)
+            res_partner_model._compute_loyalty_points()
             _logger.info('Puntos modificados - Operacion exitosa')
-            return [True, new_loyalty_points]
-        except Exception:
-             _logger.error('Error al actualizar puntos')
-             return [False, new_loyalty_points]
+            return [True, loyalty_points_model.get_points_for_partner(partner_id)]
+        except Exception as e:
+             _logger.error('Error al actualizar puntos: ',  e)
+             return [False, loyalty_points_model.get_points_for_partner(partner_id)]
         
     def get_coupons_program_owner(self, program_id):
         coupon_program = self.env['coupon.program'].browse(program_id)

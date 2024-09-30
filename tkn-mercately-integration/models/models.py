@@ -112,6 +112,10 @@ class MercatelyIntegration(models.Model):
         partner_data = self.get_partner_data_by_id(partner_id)
         if partner_data:
             mercately_partner_data = self.get_partner_data_from_mercately_by_phone(partner_data['partner_phone'])
+
+            if mercately_partner_data == 'Customer not found':
+                print('El cliente con id: ', partner_id, ' no existe en el sistema Mercately')
+                return
             
             mercately_partner_id = mercately_partner_data['id']
 
@@ -141,6 +145,7 @@ class MercatelyIntegration(models.Model):
             
             if should_update_customer:
                 self.update_partner_points_and_referred_codes_in_mercately(mercately_partner_id,payload)
+                return {'status': 'success'}
         else:
             print('El cliente con id: ', partner_id, ' de mercately no existe en el sistema Odoo')
 

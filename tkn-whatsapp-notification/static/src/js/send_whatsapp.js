@@ -39,7 +39,6 @@ odoo.define('tkn-whatsapp-notification', function (require) {
             const couponKey = Object.keys(bookedCoupons)[0];
 
             if (couponKey) {
-                console.log('couponKey',couponKey)
                 const programId = bookedCoupons[couponKey].program_id;
                 if (programId){
                     rpc.query({
