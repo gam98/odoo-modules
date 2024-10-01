@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
     'name': 'Referred programs Servicat',
     'summary': 'Referred programs Servicat',
     'description': """
-       Generic description
+       This module updates loyalty points accumulation if the order is completed using some referred coupon.
+       If the order has no coupon, the points will add to the client, but if the order has any referred coupon, 
+       the points will be added to the owner of the coupon program.
     """,
     'author': 'Tinkin Tech Partner',
     'website': 'https://www.tinkin.one',
