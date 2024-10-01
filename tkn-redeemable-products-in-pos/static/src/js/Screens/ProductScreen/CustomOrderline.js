@@ -10,6 +10,7 @@ odoo.define('tkn_redeemable_products_in_pos.CustomOrderline', function (require)
 
       get isTechnical() {
         const client = this.env.pos.get('client') || this.env.pos.get_client();
+        if(!client) return false;
         return client?.classification_id[1] === 'TECNICO';
       }
 
