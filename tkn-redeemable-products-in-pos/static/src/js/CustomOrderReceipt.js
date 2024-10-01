@@ -15,6 +15,12 @@ odoo.define('tkn_redeemable_products_in_pos.CustomOrderReceipt', function (requi
         return client?.classification_id[1] === 'TECNICO';
       }
 
+      get hasCoupons() {
+        const order = this.env.pos.get_order()
+        const bookedCoupons = order.bookedCouponCodes;
+        return Object.keys(bookedCoupons).length > 0;
+      }
+
     }
 
   Registries.Component.extend(OrderReceipt, CustomOrderReceipt);

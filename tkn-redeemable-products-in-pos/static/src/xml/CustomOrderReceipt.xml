@@ -3,7 +3,7 @@
 
      <t t-name="OrderReceiptInherit" t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension" owl="1">
         <xpath expr="//div[@class='loyalty']" position="replace">
-            <t t-if='isTechnical and receipt.loyalty'>
+            <t t-if='!hasCoupons and isTechnical and receipt.loyalty'>
                 <div class='loyalty'>
                     <span class="pos-receipt-center-align">
                         <div>--------------------------------</div>
