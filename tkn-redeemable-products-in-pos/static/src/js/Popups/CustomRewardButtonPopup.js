@@ -67,6 +67,9 @@ odoo.define('tkn_redeemable_products_in_pos.CustomRewardButtonPopup', function (
         title: this.env._t('Por favor, seleccione una recompensa'),
         list: rewardsList,
       });
+      console.log('********* CustomRewardButtonPopup *********')
+      console.log('selectedReward ->', selectedReward);
+      console.log('********* CustomRewardButtonPopup *********')
 
       if (confirmed) {
         order.apply_reward(selectedReward);

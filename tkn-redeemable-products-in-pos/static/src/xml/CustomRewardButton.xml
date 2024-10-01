@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
 
-    <t t-name="CustomRewardButton" t-inherit="pos_loyalty.RewardButton" t-inherit-mode="extension" owl="1">
-      <xpath expr="//span[@class='control-button']" position="replace">
-        <span class="control-button" t-att-class="is_available()? 'highlight' : ''">
-            <i class="fa fa-star"></i>
-            <span> </span>
-            <span>Recompensas</span>
-        </span>
-      </xpath>
-    </t>
+  <t t-name="CustomRewardButton" t-inherit="pos_loyalty.RewardButton" t-inherit-mode="extension" owl="1">
+    <xpath expr="//span[@class='control-button']" position="replace">
+      <span class="control-button" t-att-class="is_available()? 'highlight' : ''">
+          <i class="fa fa-star"></i>
+          <span> </span>
+          <span>Recompensas</span>
+      </span>
+    </xpath>
+  </t>
 </templates>

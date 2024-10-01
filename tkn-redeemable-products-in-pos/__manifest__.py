@@ -47,6 +47,8 @@
           'tkn-redeemable-products-in-pos/static/src/js/CustomRewardButton.js',
           'tkn-redeemable-products-in-pos/static/src/js/Popups/CustomRewardButtonPopup.js',
           'tkn-redeemable-products-in-pos/static/src/js/Screens/TicketScreen/TicketScreenValidation.js',
+          'tkn-redeemable-products-in-pos/static/src/js/CustomOrderReceipt.js',
+          'tkn-redeemable-products-in-pos/static/src/js/Screens/ClientListScreen/CustomClientListScreen.js',
        ],
        'web.assets_qweb': [
           'tkn-redeemable-products-in-pos/static/src/xml/Screens/ProductScreen/RedeemableProductList.xml',
@@ -62,6 +64,7 @@
           'tkn-redeemable-products-in-pos/static/src/xml/CustomRewardButton.xml',
           'tkn-redeemable-products-in-pos/static/src/xml/Popups/CustomRewardButtonPopup.xml',
           'tkn-redeemable-products-in-pos/static/src/xml/Popups/RedeemableProductsPopup.xml',
+          'tkn-redeemable-products-in-pos/static/src/xml/CustomOrderReceipt.xml',
        ],
     }
 }
