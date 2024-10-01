@@ -7,6 +7,12 @@ odoo.define('tkn_loyalty_points_expiration.PaymentScreen', function (require) {
 
   const CustomPaymentScreen = PaymentScreen =>
     class extends PaymentScreen {
+
+      isTechnical() {
+        const client = this.env.pos.get('client') || this.env.pos.get_client();
+        return client.classification_id[1] === 'TECNICO';
+      }
+
       async validateOrder(isForceValidate) {
         await super.validateOrder(isForceValidate);
 
@@ -18,7 +24,7 @@ odoo.define('tkn_loyalty_points_expiration.PaymentScreen', function (require) {
           const wonPoints = currentOrder.get_won_points();
           const spentPoints = currentOrder.get_spent_points();
 
-          if (partnerId && wonPoints !== undefined && spentPoints !== undefined) {
+          if (partnerId && this.isTechnical() && wonPoints !== undefined && spentPoints !== undefined) {
             try {
               await rpc.query({
                 model: 'loyalty.points',
