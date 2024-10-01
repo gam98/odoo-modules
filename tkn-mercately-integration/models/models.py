@@ -2,6 +2,10 @@
 
 from odoo import models, http
 import requests
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 class MercatelyIntegration(models.Model):
     _name = 'mercately'
@@ -22,7 +26,7 @@ class MercatelyIntegration(models.Model):
             str: Error message if customer is not found.
         """
 
-        mercately_api_key = http.request.env['ir.config_parameter'].sudo().get_param('MERCATELY_API_KEY')
+        mercately_api_key = self.env['ir.config_parameter'].sudo().get_param('MERCATELY_API_KEY')
         mercately_url = http.request.env['ir.config_parameter'].sudo().get_param('MERCATELY_CUSTOMERS_CRUD_URL')
 
         url = f"{mercately_url}{partner_phone}"
@@ -58,7 +62,7 @@ class MercatelyIntegration(models.Model):
         mercately_url = http.request.env['ir.config_parameter'].sudo().get_param('MERCATELY_CUSTOMERS_CRUD_URL')
 
         url = f"{mercately_url}{partner_mercately_id}"
-        mercately_api_key = http.request.env['ir.config_parameter'].sudo().get_param('MERCATELY_API_KEY')
+        mercately_api_key = self.env['ir.config_parameter'].sudo().get_param('MERCATELY_API_KEY')
 
         headers = {
         "Content-Type": "application/json",
@@ -67,10 +71,10 @@ class MercatelyIntegration(models.Model):
         }
 
         try:
-            response = requests.put(url, json=payload, headers=headers)
-            data = response.json()
+            requests.put(url, json=payload, headers=headers)
+            logger.info('El cliente fue actualizado correctamente')
         except:
-            print('REQUEST FAILED')
+            logger.error('Error al actualizar cliente')
 
     def get_partner_data_by_id(self, partner_id):
         """
@@ -114,7 +118,7 @@ class MercatelyIntegration(models.Model):
             mercately_partner_data = self.get_partner_data_from_mercately_by_phone(partner_data['partner_phone'])
 
             if mercately_partner_data == 'Customer not found':
-                print('El cliente con id: ', partner_id, ' no existe en el sistema Mercately')
+                logger.info(f'El cliente con id: {partner_id} no existe en el sistema Mercately')
                 return
             
             mercately_partner_id = mercately_partner_data['id']
@@ -147,7 +151,7 @@ class MercatelyIntegration(models.Model):
                 self.update_partner_points_and_referred_codes_in_mercately(mercately_partner_id,payload)
                 return {'status': 'success'}
         else:
-            print('El cliente con id: ', partner_id, ' de mercately no existe en el sistema Odoo')
+            logger.info(f'El cliente con id:  {partner_id} de mercately no existe en el sistema Odoo')
 
     def _get_coupon_programs_from_partner_id(self, partner_id):
         """
@@ -176,3 +180,9 @@ class MercatelyIntegration(models.Model):
 
             return coupon_codes
         return ''
+    
+    def update_mercately_clients_cronjob(self):
+        partners = self.env['res.partner'].search([]).ids
+        for id in partners:
+            self.update_mercately_partner_info(id)
+

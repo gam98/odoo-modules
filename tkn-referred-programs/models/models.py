@@ -29,7 +29,13 @@ class PosOrder(models.Model):
             partner_id = coupon_program_data['assigned_customer'][0]
             points_added = self._add_or_substract_points_to_program_owner(partner_id, loyalty_points,'add')
 
-            if points_added[0]:
+            original_order_client = self.env['res.partner'].search([('id', '=', original_partner_id)]).read()
+
+            is_technical = False
+            if original_order_client[0]['classification_id'] is not False:
+                is_technical = original_order_client[0]['classification_id'][1] == 'TECNICO'
+
+            if points_added[0] and is_technical:
                 self._add_or_substract_points_to_program_owner(original_partner_id, loyalty_points,'substract')
 
         return pos_order_id

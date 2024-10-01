@@ -56,8 +56,8 @@ odoo.define('tkn-whatsapp-notification', function (require) {
                 }
             } else {
                 const messages = this.buildMessages(messageData);
-                messages.forEach(message => {
-                    this.callMercatelyAPI(client_phone, message);
+                messages.forEach(message => {                    
+                    setTimeout(this.callMercatelyAPI(client_phone, message), 1000)
                 });
             }
         },
