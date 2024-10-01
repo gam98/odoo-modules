@@ -14,6 +14,10 @@ odoo.define('tkn-mercately-integration', function (require) {
             console.log("No hay cliente asociado a la orden.");
             return;
         }
+        if (client.classification_id[1] != 'TECNICO') {
+            console.log("El cliente no es un técnico. Abortando actualización en Mercately");
+            return;
+        }
         
         const bookedCoupons = this.bookedCouponCodes;
         const couponKey = Object.keys(bookedCoupons)[0];

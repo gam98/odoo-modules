@@ -14,7 +14,11 @@ odoo.define('tkn-whatsapp-notification', function (require) {
                 console.log("No hay cliente asociado a la orden.");
                 return;
             }
-            
+        if (client.classification_id[1] != 'TECNICO') {
+            console.log("El cliente no es un técnico. Abortando envío de notificación");
+            return;
+        }
+                        
             const client_name = client.name;
             const client_phone = client.mobile || client.phone;
             
