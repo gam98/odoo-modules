@@ -72,9 +72,11 @@ class MercatelyIntegration(models.Model):
 
         try:
             requests.put(url, json=payload, headers=headers)
-            logger.info('El cliente fue actualizado correctamente')
+            logger.info('El cliente fue actualizado correctamente en Mercately')
+            return 'El cliente fue actualizado correctamente en Mercately'
         except:
-            logger.error('Error al actualizar cliente')
+            logger.error('Error al actualizar cliente en Mercately')
+            return 'Error al actualizar cliente en Mercately'
 
     def get_partner_data_by_id(self, partner_id):
         """
@@ -148,8 +150,8 @@ class MercatelyIntegration(models.Model):
                 should_update_customer = True
             
             if should_update_customer:
-                self.update_partner_points_and_referred_codes_in_mercately(mercately_partner_id,payload)
-                return {'status': 'success'}
+                result = self.update_partner_points_and_referred_codes_in_mercately(mercately_partner_id,payload)
+                return result
         else:
             logger.info(f'El cliente con id:  {partner_id} de mercately no existe en el sistema Odoo')
 

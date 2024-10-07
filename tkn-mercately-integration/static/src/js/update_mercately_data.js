@@ -44,11 +44,7 @@ odoo.define('tkn-mercately-integration', function (require) {
                 method: 'update_mercately_partner_info',  
                 args: [this, client_id], 
             }).then(function (result) {
-                if (result.status === 'success') {
-                    console.log('Información del partner actualizada correctamente');
-                } else {
-                    console.error('Error al actualizar la información del partner');
-                }
+                console.log({result})
             }).catch(function (error) {
                 console.error('Error en la llamada RPC:', error);
             });
